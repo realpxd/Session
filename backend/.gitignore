@@ -1,1 +1,15 @@
 /node_modules
+.env
+
+/routes/shop.js
+/routes/appointments.js
+
+/models/Shops.js
+
+/middlewares/shopImagesMulter.js
+/middlewares/shopLogoMulter.js
+
+/images/shop-images
+/images/shop-logos
+
+/controllers/shop

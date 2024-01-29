@@ -31,7 +31,7 @@ const sendOtp = async (req, res) => {
             let options = {
                 to: email,
                 subject: "!! Welcome to Oolker !!",
-                content: `<h3>Your OTP to join Oolkar is: </h3> 
+                content: `<h3>Your OTP to join Session is: </h3> 
                           <h1>${otp}</h1>`
             }
             await sendEmail(options)

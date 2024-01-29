@@ -9,36 +9,17 @@ import {
   View,
   Button
 } from 'react-native';
+import { getGlobalStyles } from './globalStyles';
+import MainActivity from './components/MainActivity/MainActivity';
 
 const App = () => {
+  const styles = getGlobalStyles();
   return (
-    <View>
-      <Text style={{ fontSize: 30 }}>
-        hello
-      </Text>
-      <Button title='Press Here'></Button>
-      <Button title='Press Here too'></Button>
+    <View style={styles.container}>
+      <MainActivity />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 export default App;

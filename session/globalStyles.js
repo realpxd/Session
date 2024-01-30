@@ -7,33 +7,27 @@ export const getGlobalStyles = (isDarkMode) => {
         backgroundColor: '#333',
         textColor: '#fff',
         borderColor: '#fff',
-        
-        btnSecondaryTextColor: '#97D8C4',
-        btnSecondaryBorderColor: '#6B9AC4',
+
     } : {
-        backgroundColor: '#EFF2F1',
+        backgroundColor: '#fff',
         textColor: '#333',
         borderColor: '#333',
-        
-        btnSecondaryTextColor: '#4059AD',
-        btnSecondaryBorderColor: '#4059AD',
+
     };
 
     defaults = {
         ...defaults,
-        
+
         btnBorderWidth: 1,
         btnBorderRadius: 15,
 
-        btnPrimaryBackgroundColor: '#4059AD',
-        btnPrimaryBackgroundColorHover: '#4059AD',
+        btnPrimaryBackgroundColor: '#F4B942',
+        btnPrimaryBackgroundColorHover: '#6B9AC4',
         btnPrimaryTextColor: '#fff',
 
-        btnSecondaryBackgroundColor: 'transparent',
-        btnSecondaryBackgroundColorHover: '#97D8C4',
-
-        containerBackgroundColor: '#EFF2F1',
-        containerBackgroundColorHover: '#97D8C4',
+        btnSecondaryTextColor: '#fff',
+        btnSecondaryBackgroundColor: '#4059AD',
+        btnSecondaryBackgroundColorHover: '#4059AD',
 
         headingColor: '#F4B942',
         textSize: 18,
@@ -45,7 +39,6 @@ export const getGlobalStyles = (isDarkMode) => {
             backgroundColor: defaults.backgroundColor,
             height: '100%',
             padding: 20,
-
         },
         wrapperVertical: {
             flexDirection: 'column',
@@ -55,7 +48,8 @@ export const getGlobalStyles = (isDarkMode) => {
         text: {
             color: defaults.textColor,
             fontSize: defaults.textSize,
-            
+            textAlign: 'justify',
+
         },
         heading1: {
             color: defaults.headingColor,
@@ -77,14 +71,6 @@ export const getGlobalStyles = (isDarkMode) => {
             fontWeight: 'bold',
             marginTop: 10,
             marginBottom: 10,
-        },
-        input: {
-            borderWidth: 1,
-            borderColor: defaults.borderColor,
-            padding: 10,
-            fontSize: 18,
-            borderRadius: 6,
-            color: defaults.textColor,
         },
         errorText: {
             color: 'crimson',
@@ -119,9 +105,9 @@ export const getGlobalStyles = (isDarkMode) => {
             textAlign: 'center',
             padding: 10,
         },
-        img : {
+        img: {
             width: 350,
-            height: 350,
+            height: 270,
             resizeMode: 'contain',
             alignSelf: 'center',
         }

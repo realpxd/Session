@@ -1,27 +1,70 @@
 import React from 'react'
-import { View, Text, TouchableOpacity, Image } from 'react-native'
+import { View, Text, TouchableOpacity, Image, Form } from 'react-native'
 import { getGlobalStyles } from '../../globalStyles'
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+import { TextInput } from 'react-native-paper';
 
-const MainActivity = () => {
-  const styles = getGlobalStyles()
+import Home from './Home'
+import Register from './Register'
+import Login from './Login'
+
+const Stack = createStackNavigator();
+const styles = getGlobalStyles()
+
+const MyTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: 'transparent'
+  },
+};
+
+const MainActivity = (props) => {
   return (
-    <View style={styles.wrapperVertical}>
-      <View>
-        <Text style={[styles.heading1, { textAlign: 'center' }]}>Session!</Text>
-        <Image style={[styles.img, { marginTop: 15 }]} source={require('../../public/img/mainActivity.png')} />
-        <Text style={styles.text}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis accusantium quasi dolores totam inventore temporibus quidem commodi rerum est laborum dolore maiores veritatis quibusdam doloremque sapiente veniam, eius dignissimos repudiandae?</Text>
-      </View>
-      <View>
-        <TouchableOpacity style={styles.btnPrimary} onPress={() => navigation.navigate('Login')}>
-          <Text style={styles.btnPrimaryText}>Login</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.btnSecondary} onPress={() => navigation.navigate('Register')}>
-          <Text style={styles.btnSecondaryText}>Register</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    <NavigationContainer theme={MyTheme}>
+      <Stack.Navigator
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: '#4059AD',
+            borderRadius: 30,
+            elevation: 5,
+            shadowColor: '#000',
+            shadowOffset: {
+              height: 10,
+            },
+          },
+          headerTitleStyle: {
+            fontSize: 25,
+          },
+          headerTintColor: '#fff',
+        }}>
+        <Stack.Screen name="Home" component={Home}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen name="Register" component={Register} />
+        <Stack.Screen name="Login" component={Login}
+          options={
+            {
+              headerStyle: {
+                backgroundColor: '#F4B942',
+                borderRadius: 30,
+                elevation: 5,
+                shadowColor: '#000',
+                shadowOffset: {
+                  height: 10,
+                },
+              }
+            }
+          }
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   )
 }
+
+
 
 export default MainActivity

@@ -2,9 +2,9 @@ import React from 'react'
 import { StyleSheet } from 'react-native'
 
 export const getGlobalStyles = (isDarkMode) => {
-    isDarkMode = false;
+    isDarkMode = true;
     var defaults = isDarkMode ? {
-        backgroundColor: '#333',
+        backgroundColor: '#222',
         textColor: '#fff',
         borderColor: '#fff',
 
@@ -31,6 +31,9 @@ export const getGlobalStyles = (isDarkMode) => {
 
         headingColor: '#F4B942',
         textSize: 18,
+
+        inputBgColor: "#333",
+        inputTextColor: "#fff"
 
     };
 
@@ -88,6 +91,8 @@ export const getGlobalStyles = (isDarkMode) => {
             fontSize: defaults.textSize,
             textAlign: 'center',
             padding: 10,
+            paddingHorizontal:25,
+            fontWeight: 'bold'
         },
         btnPrimaryHover: {
             backgroundColor: defaults.btnPrimaryBackgroundColorHover,
@@ -98,6 +103,7 @@ export const getGlobalStyles = (isDarkMode) => {
             borderWidth: defaults.btnBorderWidth,
             borderColor: defaults.btnSecondaryBorderColor,
             marginTop: 10,
+            fontWeight: 'bold'
         },
         btnSecondaryText: {
             color: defaults.btnSecondaryTextColor,
@@ -107,9 +113,16 @@ export const getGlobalStyles = (isDarkMode) => {
         },
         img: {
             width: 350,
-            height: 270,
+            height: 110,
             resizeMode: 'contain',
             alignSelf: 'center',
+        },
+        input: {
+            backgroundColor: defaults.inputBgColor,
+            color: defaults.inputTextColor,
+            tintColor: defaults.inputTextColor,
+            tintColor: defaults.inputTextColor,
+            rippleColor:defaults.inputTextColor
         }
     });
 }

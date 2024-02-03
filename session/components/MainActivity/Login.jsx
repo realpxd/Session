@@ -2,14 +2,13 @@
 import React , {useState} from 'react';
 import { View, Text, TouchableOpacity, Image, Form , ActivityIndicator } from 'react-native'
 import { HelperText, TextInput } from 'react-native-paper';
-import { Icon, MD3Colors } from 'react-native-paper';
 import { getGlobalStyles } from '../../globalStyles'
 const styles = getGlobalStyles()
 
 const Login = (props) => {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
-    const [isLoginBtnClicked, setIsLoginBtnClicked] = useState(false);
+    const [isLoginBtnClicked, setIsLoginBtnClicked] = useState(true);
 
 
     const hasErrors = () => {
@@ -19,10 +18,10 @@ const Login = (props) => {
 
     const handleLogin = () => {
         setIsLoginBtnClicked(true);
-        setTimeout(() => {
-            setIsLoginBtnClicked(false);
-            props.navigation.navigate('Home')
-        }, 5000);
+        // setTimeout(() => {
+        //     setIsLoginBtnClicked(false);
+        //     props.navigation.navigate('Home')
+        // }, 5000);
     }
 
     return (

@@ -1,12 +1,13 @@
 import React from 'react'
 import { View, Text, TouchableOpacity, Image, Form } from 'react-native'
 
-const Feed = (props) => {
+const Inbox = (props) => {
+    const { styles } = props
   return (
-    <View >
-      <Text>Feed</Text>
+    <View>
+    <Text style={styles.text}>Inbox</Text>
     </View>
   )
 }
 
-export default Feed
+export default Inbox

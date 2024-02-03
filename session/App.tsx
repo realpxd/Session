@@ -1,4 +1,4 @@
-import React , {useState} from 'react';
+import React, { useState } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -11,17 +11,22 @@ import {
 } from 'react-native';
 import { getGlobalStyles } from './globalStyles';
 import MainActivity from './components/MainActivity/MainActivity';
-import Feed from './components/UserActivity/Feed';
+import NavActivity from './components/UserActivity/NavActivity';
 
 const styles = getGlobalStyles();
 
 const App = () => {
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(true);
 
   return (
-    <View style={styles.container}>
-      {!isUserLoggedIn ? <MainActivity styles={styles} /> : <Feed styles={styles} />}
-    </View>
+    <>
+      {!isUserLoggedIn ?
+        <View style={styles.container}>
+          <MainActivity styles={styles} />
+        </View>
+        : <NavActivity styles={styles} />
+      }
+    </>
   );
 }
 

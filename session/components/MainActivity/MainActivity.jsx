@@ -38,18 +38,18 @@ const MainActivity = (props) => {
           },
           headerTintColor: '#fff',
         }}>
-        <Stack.Screen name="Home" component={Home}
+        <Stack.Screen name="Home"
           options={{
             headerShown: false,
           }}
         >
-          {props => <HomeScreen {...props} styles={styles} />}
+          {props => <Home {...props} styles={styles} />}
         </Stack.Screen>
-        <Stack.Screen name="Register" component={Register}
+        <Stack.Screen name="Register"
         >
-          {props => <HomeScreen {...props} styles={styles} />}
+          {props => <Register {...props} styles={styles} />}
         </Stack.Screen>
-        <Stack.Screen name="Login" component={Login}
+        <Stack.Screen name="Login"
           options={
             {
               headerStyle: {
@@ -64,7 +64,7 @@ const MainActivity = (props) => {
             }
           }
         >
-          {props => <HomeScreen {...props} styles={styles} />}
+          {props => <Login {...props} styles={styles} />}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>

@@ -1,20 +1,29 @@
 
-import * as React from 'react';
-import { View, Text, TouchableOpacity, Image, Form } from 'react-native'
+import React , {useState} from 'react';
+import { View, Text, TouchableOpacity, Image, Form , ActivityIndicator } from 'react-native'
 import { HelperText, TextInput } from 'react-native-paper';
 import { Icon, MD3Colors } from 'react-native-paper';
 import { getGlobalStyles } from '../../globalStyles'
 const styles = getGlobalStyles()
 
 const Login = (props) => {
-    const [email, setEmail] = React.useState('');
-    const [pass, setPass] = React.useState('');
+    const [email, setEmail] = useState('');
+    const [pass, setPass] = useState('');
+    const [isLoginBtnClicked, setIsLoginBtnClicked] = useState(false);
 
 
     const hasErrors = () => {
         if (email.length == 0) return false;
         return !email.includes('@');
     };
+
+    const handleLogin = () => {
+        setIsLoginBtnClicked(true);
+        setTimeout(() => {
+            setIsLoginBtnClicked(false);
+            props.navigation.navigate('Home')
+        }, 5000);
+    }
 
     return (
         <View style={[styles.wrapperVertical, { justifyContent: 'center' }]}>
@@ -29,7 +38,7 @@ const Login = (props) => {
                     theme={{ colors: { onSurface: "white" } }}
                     placeholderTextColor="#FFF"
                     onChangeText={email => setEmail(email)}
-                    right={<TextInput.Affix text="" />}
+                    left={<TextInput.Icon icon="email" />}
                 />
                 <TextInput
                     mode="outlined"
@@ -40,16 +49,24 @@ const Login = (props) => {
                     secureTextEntry
                     theme={{ colors: { onSurface: "white" } }}
                     onChangeText={pass => setPass(pass)}
-                    right={<TextInput.Icon icon="eye" />}
+                    left={<TextInput.Icon icon="key" />}
                 />
 
-                <Text style={[styles.text, { color: '#6B9AC4', textAlign: 'right' }]}>Forgot Password?</Text>
+                <View style={[{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row' }]}>
+                    <TouchableOpacity onPress={() => props.navigation.navigate('Register')}>
+                        <Text style={[styles.text, { color: '#6B9AC4', textAlign: 'left' }]}>new to session?</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity >
+                        <Text style={[styles.text, { color: '#6B9AC4', textAlign: 'right' }]}>reset password</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
             <HelperText type="error" visible={hasErrors()}>
                 Email address is invalid!
             </HelperText>
-            <TouchableOpacity style={[styles.btnPrimary, { marginTop: 50 }]}>
-                <Text style={styles.btnPrimaryText}>Continue</Text>
+            <TouchableOpacity onPress={()=>handleLogin()} style={[styles.btnPrimary, { marginTop: 50 }]}>
+                {isLoginBtnClicked ? <ActivityIndicator size="30" color="#fff" /> : 
+                <Text style={styles.btnSecondaryText}>Continue</Text>}
             </TouchableOpacity>
         </View>
     )

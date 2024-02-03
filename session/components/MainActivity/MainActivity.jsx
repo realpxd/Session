@@ -1,6 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text, TouchableOpacity, Image, Form } from 'react-native'
-import { getGlobalStyles } from '../../globalStyles'
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { TextInput } from 'react-native-paper';
@@ -10,8 +9,6 @@ import Register from './Register'
 import Login from './Login'
 
 const Stack = createStackNavigator();
-const styles = getGlobalStyles()
-
 const MyTheme = {
   ...DefaultTheme,
   colors: {
@@ -21,6 +18,8 @@ const MyTheme = {
 };
 
 const MainActivity = (props) => {
+  const { styles } = props
+
   return (
     <NavigationContainer theme={MyTheme}>
       <Stack.Navigator
@@ -43,8 +42,13 @@ const MainActivity = (props) => {
           options={{
             headerShown: false,
           }}
-        />
-        <Stack.Screen name="Register" component={Register} />
+        >
+          {props => <HomeScreen {...props} styles={styles} />}
+        </Stack.Screen>
+        <Stack.Screen name="Register" component={Register}
+        >
+          {props => <HomeScreen {...props} styles={styles} />}
+        </Stack.Screen>
         <Stack.Screen name="Login" component={Login}
           options={
             {
@@ -59,7 +63,9 @@ const MainActivity = (props) => {
               }
             }
           }
-        />
+        >
+          {props => <HomeScreen {...props} styles={styles} />}
+        </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   )

@@ -1,20 +1,28 @@
-import React from 'react'
-import { View, Text, TouchableOpacity, Image, Form } from 'react-native'
+import React , {useState} from 'react'
+import { View, Text, TouchableOpacity, Image, Form , ActivityIndicator } from 'react-native'
 import { TextInput } from 'react-native-paper';
-import { getGlobalStyles } from '../../globalStyles'
-const styles = getGlobalStyles()
 
 const Register = (props) => {
-    const [email, setEmail] = React.useState('');
-    const [name, setName] = React.useState('');
-    const [pass, setPass] = React.useState('');
-    const [cpass, setCpass] = React.useState('');
+    const {styles} = props
+    const [email, setEmail] = useState('');
+    const [name, setName] = useState('');
+    const [pass, setPass] = useState('');
+    const [cpass, setCpass] = useState('');
+    const [isRegisterBtnClicked, setIsRegisterBtnClicked] = useState(false);
+
+    const handleRegister = () => {
+        setIsRegisterBtnClicked(true);
+        setTimeout(() => {
+            setIsRegisterBtnClicked(false);
+            props.navigation.navigate('Home')
+        }, 5000);
+    }
     return (
-        <View style={[styles.wrapperVertical, {justifyContent:'center', gap:50}]}>
+        <View style={[styles.wrapperVertical, { justifyContent: 'center', gap: 50 }]}>
 
             {/* <Image style={[styles.img, { marginTop: 15, marginBottom: -20 }]} source={require('../../public/img/register.png')} /> */}
             <View style={[{ gap: 20 }]}>
-            <Text style={[styles.heading1, {color:"#fff"}]}>Sign up</Text>
+                <Text style={[styles.heading1, { color: "#fff" }]}>Sign up</Text>
                 <TextInput
                     mode="outlined"
                     label="Email"
@@ -22,7 +30,7 @@ const Register = (props) => {
                     style={styles.input}
                     theme={{ colors: { onSurface: "white" } }}
                     onChangeText={email => setEmail(email)}
-                    right={<TextInput.Affix text="" />}
+                    left={<TextInput.Icon icon="email" />}
                 />
                 <TextInput
                     mode="outlined"
@@ -31,7 +39,7 @@ const Register = (props) => {
                     style={styles.input}
                     theme={{ colors: { onSurface: "white" } }}
                     onChangeText={name => setName(name)}
-                    right={<TextInput.Affix text="" />}
+                    left={<TextInput.Icon icon="account" />}
                 />
                 <TextInput
                     mode="outlined"
@@ -41,7 +49,7 @@ const Register = (props) => {
                     theme={{ colors: { onSurface: "white" } }}
                     secureTextEntry
                     onChangeText={pass => setPass(pass)}
-                    right={<TextInput.Affix text="" />}
+                    left={<TextInput.Icon icon="key" />}
                 />
                 <TextInput
                     mode="outlined"
@@ -51,11 +59,15 @@ const Register = (props) => {
                     theme={{ colors: { onSurface: "white" } }}
                     secureTextEntry
                     onChangeText={cpass => setCpass(cpass)}
-                    right={<TextInput.Affix text="" />}
+                    left={<TextInput.Icon icon="key" />}
                 />
+                <TouchableOpacity onPress={() => props.navigation.navigate('Login')}>
+                    <Text style={[styles.text, { color: '#6B9AC4', textAlign: 'left' }]}>already have an account?</Text>
+                </TouchableOpacity>
             </View>
-            <TouchableOpacity style={[styles.btnSecondary]}>
-                <Text style={styles.btnSecondaryText}>Continue</Text>
+            <TouchableOpacity onPress={()=> handleRegister()} style={[styles.btnSecondary]}>
+                {isRegisterBtnClicked ? <ActivityIndicator size="30" color="#fff" /> : 
+                <Text style={styles.btnSecondaryText}>Continue</Text>}
             </TouchableOpacity>
         </View>
     )

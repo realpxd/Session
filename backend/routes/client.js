@@ -28,5 +28,6 @@ client
     .post('/getUser', authenticateToken, getUser)
     .get('/getPosts', require('../controllers/client/getPosts.js'))
     .post('/createPost', require('../controllers/client/createPost.js'))
+    .post('/updatePost', require('../controllers/client/updatePost.js'))
 
 module.exports = client;

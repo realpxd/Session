@@ -1,4 +1,5 @@
-
+import { useContext } from 'react';
+import { RootContext } from '../../RootContext';
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Image, Form, ActivityIndicator } from 'react-native'
 import { HelperText, TextInput } from 'react-native-paper';
@@ -6,6 +7,7 @@ import { getGlobalStyles } from '../../globalStyles'
 const styles = getGlobalStyles()
 
 const Login = (props) => {
+    const { text, setText } = useContext(RootContext);
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
     const [isLoginBtnClicked, setIsLoginBtnClicked] = useState(false);
@@ -26,9 +28,8 @@ const Login = (props) => {
     }
 
     const handleSubmit = async () => {
-        console.warn("errorMessage");
         try {
-            const response = await fetch('http://localhost:8080/client/login', {
+            const response = await fetch('http://192.168.29.35:8080/client/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -36,11 +37,10 @@ const Login = (props) => {
                 body: JSON.stringify({ email, pass }),
             });
             const data = await response.json();
-            console.warn(data);
             setIsLoginBtnClicked(false);
             props.navigation.navigate('NavActivity')
         } catch (e) {
-            console.warn(e);
+            setErrorMessage(e.message)
         }
     }
 
@@ -49,7 +49,7 @@ const Login = (props) => {
         <View style={[styles.wrapperVertical, { justifyContent: 'center', padding: 20 }]}>
             {/* <Image style={[styles.img, { marginTop: 15, marginBottom: -20 }]} source={require('../../public/img/login.png')} /> */}
             <View style={[{ gap: 20 }]}>
-                <Text style={[styles.heading1, { color: "#fff" }]}>Sign In</Text>
+                <Text style={[styles.heading1, { color: "#fff" }]}>Sign In {text}</Text>
                 <TextInput
                     mode="outlined"
                     label="Email"

@@ -2,16 +2,24 @@
  * @format
  */
 
-import { AppRegistry } from 'react-native';
+import React, { useState } from "react";
+import { AppRegistry , Button } from 'react-native';
 import App from './App';
 import { name as appName } from './app.json';
 import { PaperProvider } from 'react-native-paper';
+import { RootContext } from './RootContext'
 
 export default function Main() {
+    // const [text, setText] = useState("sda");
+    // setText("sdae");
+
     return (
-        <PaperProvider>
-            <App />
-        </PaperProvider>
+        // <RootContext.Provider value={{ text, setText }}>
+            <PaperProvider>
+                <App />
+                {/* <Button title="Update text" onPress={() => setText("New text")} /> */}
+            </PaperProvider>
+        // </RootContext.Provider>
     );
 }
 

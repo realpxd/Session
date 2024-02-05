@@ -28,7 +28,7 @@ const Register = (props) => {
 
     const handleSubmit = async () => {
         try {
-            const response = await fetch('http://localhost:8080/client/signup', {
+            const response = await fetch('http://192.168.29.35:8080/client/signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

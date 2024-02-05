@@ -24,6 +24,7 @@ const postsSchema = new mongoose.Schema({
     },
     likes: {
         type: Number,
+        default: 0,
         minlength: 0
     },
     comments: {
@@ -32,6 +33,10 @@ const postsSchema = new mongoose.Schema({
     },
     reposts: {
         type: Number,
+        minlength: 0
+    },
+    likedBy: {
+        type: Array,
         minlength: 0
     },
 

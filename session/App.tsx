@@ -9,6 +9,8 @@ import {
   View,
   Button
 } from 'react-native';
+import { useContext } from 'react';
+import { RootContext } from './RootContext';
 import { getGlobalStyles } from './globalStyles';
 import MainActivity from './components/MainActivity/MainActivity';
 import NavActivity from './components/UserActivity/NavActivity';
@@ -16,7 +18,8 @@ import NavActivity from './components/UserActivity/NavActivity';
 const styles = getGlobalStyles();
 
 const App = () => {
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState(true);
+  // const text = useContext(RootContext);
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 
   return (
     <>

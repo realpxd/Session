@@ -8,7 +8,7 @@ const styles = getGlobalStyles()
 const Login = (props) => {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
-    const [isLoginBtnClicked, setIsLoginBtnClicked] = useState(true);
+    const [isLoginBtnClicked, setIsLoginBtnClicked] = useState(false);
 
 
     const hasErrors = () => {
@@ -18,10 +18,10 @@ const Login = (props) => {
 
     const handleLogin = () => {
         setIsLoginBtnClicked(true);
-        // setTimeout(() => {
-        //     setIsLoginBtnClicked(false);
-        //     props.navigation.navigate('Home')
-        // }, 5000);
+        setTimeout(() => {
+            setIsLoginBtnClicked(false);
+            props.navigation.navigate('Home')
+        }, 5000);
     }
 
     return (

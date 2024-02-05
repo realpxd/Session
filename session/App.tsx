@@ -24,7 +24,10 @@ const App = () => {
         <View style={styles.container}>
           <MainActivity styles={styles} />
         </View>
-        : <NavActivity styles={styles} />
+        :
+        <View style={[styles.container , {padding:0}]}>
+          <NavActivity styles={styles} />
+        </View>
       }
     </>
   );

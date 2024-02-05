@@ -46,6 +46,7 @@ export const getGlobalStyles = (isDarkMode) => {
         wrapperVertical: {
             flexDirection: 'column',
             justifyContent: 'space-between',
+            backgroundColor: defaults.backgroundColor,
             flex: 1,
         },
         text: {

@@ -20,6 +20,7 @@ const client = require('./routes/client.js');
 
 // setting up routes
 app.use('/client', client);
+
 // calling the connectDB function and listening server in then block
 connectDB(process.env.DATABASE_URI).then(() => {
   // listening server

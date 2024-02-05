@@ -1,6 +1,6 @@
 
-import React , {useState} from 'react';
-import { View, Text, TouchableOpacity, Image, Form , ActivityIndicator } from 'react-native'
+import React, { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity, Image, Form, ActivityIndicator } from 'react-native'
 import { HelperText, TextInput } from 'react-native-paper';
 import { getGlobalStyles } from '../../globalStyles'
 const styles = getGlobalStyles()
@@ -9,23 +9,44 @@ const Login = (props) => {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
     const [isLoginBtnClicked, setIsLoginBtnClicked] = useState(false);
-
+    const [errorMessage, setErrorMessage] = useState('');
 
     const hasErrors = () => {
-        if (email.length == 0) return false;
+        if (email.length == 0 || email.includes('@')) return setErrorMessage('');
+        setErrorMessage('Email address is invalid!')
         return !email.includes('@');
     };
+    useEffect(() => {
+        hasErrors()
+    }, [email])
 
     const handleLogin = () => {
+        handleSubmit();
         setIsLoginBtnClicked(true);
-        setTimeout(() => {
-            setIsLoginBtnClicked(false);
-            props.navigation.navigate('Home')
-        }, 5000);
     }
 
+    const handleSubmit = async () => {
+        console.warn("errorMessage");
+        try {
+            const response = await fetch('http://localhost:8080/client/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, pass }),
+            });
+            const data = await response.json();
+            console.warn(data);
+            setIsLoginBtnClicked(false);
+            props.navigation.navigate('NavActivity')
+        } catch (e) {
+            console.warn(e);
+        }
+    }
+
+
     return (
-        <View style={[styles.wrapperVertical, { justifyContent: 'center' }]}>
+        <View style={[styles.wrapperVertical, { justifyContent: 'center', padding: 20 }]}>
             {/* <Image style={[styles.img, { marginTop: 15, marginBottom: -20 }]} source={require('../../public/img/login.png')} /> */}
             <View style={[{ gap: 20 }]}>
                 <Text style={[styles.heading1, { color: "#fff" }]}>Sign In</Text>
@@ -60,12 +81,12 @@ const Login = (props) => {
                     </TouchableOpacity>
                 </View>
             </View>
-            <HelperText type="error" visible={hasErrors()}>
-                Email address is invalid!
-            </HelperText>
-            <TouchableOpacity onPress={()=>handleLogin()} style={[styles.btnPrimary, { marginTop: 50 }]}>
-                {isLoginBtnClicked ? <ActivityIndicator size="30" color="#fff" /> : 
-                <Text style={styles.btnSecondaryText}>Continue</Text>}
+            {errorMessage && <HelperText style={{ fontSize: 15}} type="error">
+                {errorMessage}
+            </HelperText>}
+            <TouchableOpacity onPress={() => handleLogin()} style={[styles.btnPrimary, { marginTop: 50 }]}>
+                {isLoginBtnClicked ? <ActivityIndicator size="30" color="#fff" /> :
+                    <Text style={styles.btnSecondaryText}>Continue</Text>}
             </TouchableOpacity>
         </View>
     )

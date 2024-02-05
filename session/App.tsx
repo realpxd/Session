@@ -21,13 +21,9 @@ const App = () => {
   return (
     <>
       {!isUserLoggedIn ?
-        <View style={styles.container}>
           <MainActivity styles={styles} />
-        </View>
         :
-        <View style={[styles.container , {padding:0}]}>
           <NavActivity styles={styles} />
-        </View>
       }
     </>
   );

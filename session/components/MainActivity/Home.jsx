@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Image, Form } from 'react-native'
 import { IconButton } from 'react-native-paper'
 
 const Home = (props) => {
-    const {styles} = props
+    const { styles } = props
     return (
         <View style={[styles.wrapperVertical, { justifyContent: 'center', gap: 100 }]}>
             <View>

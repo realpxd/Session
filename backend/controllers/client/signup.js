@@ -2,7 +2,7 @@
 const Users = require('../../models/Users.js');
 
 const signup = async (req, res) => {
-    const { name, email, password, phone } = req.body;
+    const { name, email, password } = req.body;
     try {
         // checking if user already exists
         let userExist = await Users.findOne({ email })
@@ -12,8 +12,7 @@ const signup = async (req, res) => {
             let userCreated = await Users.create({
                 name,
                 email,
-                password,
-                phone
+                password
             })
             res.status(200).json({
                 message: "Account created successfully :)",

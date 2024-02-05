@@ -7,6 +7,7 @@ import { TextInput } from 'react-native-paper';
 import Home from './Home'
 import Register from './Register'
 import Login from './Login'
+import NavActivity from '../UserActivity/NavActivity';
 
 const Stack = createStackNavigator();
 const MyTheme = {
@@ -21,53 +22,45 @@ const MainActivity = (props) => {
   const { styles } = props
 
   return (
-    <NavigationContainer theme={MyTheme}>
-      <Stack.Navigator
-        screenOptions={{
-          headerStyle: {
-            backgroundColor: '#4059AD',
-            borderRadius: 30,
-            elevation: 5,
-            shadowColor: '#000',
-            shadowOffset: {
-              height: 10,
-            },
-          },
-          headerTitleStyle: {
-            fontSize: 25,
-          },
-          headerTintColor: '#fff',
-        }}>
-        <Stack.Screen name="Home"
-          options={{
-            headerShown: false,
-          }}
-        >
-          {props => <Home {...props} styles={styles} />}
-        </Stack.Screen>
-        <Stack.Screen name="Register"
-        >
-          {props => <Register {...props} styles={styles} />}
-        </Stack.Screen>
-        <Stack.Screen name="Login"
-          options={
-            {
-              headerStyle: {
-                backgroundColor: '#F4B942',
-                borderRadius: 30,
-                elevation: 5,
-                shadowColor: '#000',
-                shadowOffset: {
-                  height: 10,
-                },
+    <View style={[styles.container, { padding: 0 }]}>
+      <NavigationContainer theme={MyTheme}>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false
+          }}>
+          <Stack.Screen name="Home"
+          >
+            {props => <Home {...props} styles={styles} />}
+          </Stack.Screen>
+          <Stack.Screen name="Register"
+          >
+            {props => <Register {...props} styles={styles} />}
+          </Stack.Screen>
+          <Stack.Screen name="Login"
+          >
+            {props => <Login {...props} styles={styles} />}
+          </Stack.Screen>
+          <Stack.Screen name="NavActivity"
+            options={
+              {
+                headerShown: false,
+                headerStyle: {
+                  backgroundColor: '#F4B942',
+                  borderRadius: 30,
+                  elevation: 5,
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    height: 10,
+                  },
+                }
               }
             }
-          }
-        >
-          {props => <Login {...props} styles={styles} />}
-        </Stack.Screen>
-      </Stack.Navigator>
-    </NavigationContainer>
+          >
+            {props => <NavActivity {...props} styles={styles} />}
+          </Stack.Screen>
+        </Stack.Navigator>
+      </NavigationContainer>
+    </View>
   )
 }
 

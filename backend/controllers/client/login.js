@@ -9,7 +9,7 @@ const login = async (req, res) => {
 
         if (!userExist) {
             // If user does not exist, send an error
-            res.status(400).json({ message: "Invalid Credentials" })
+            res.status(405).json({ message: "Invalid Credentials" })
         } else {
             // If user exists, check the password
             const isPasswordValid = await userExist.comparePassword(password);

@@ -26,5 +26,7 @@ client
     .post("/getImage", authenticateToken, getImage)
     .post('/updateProfile', authenticateToken, updateProfile)
     .post('/getUser', authenticateToken, getUser)
+    .get('/getPosts', require('../controllers/client/getPosts.js'))
+    .post('/createPost', require('../controllers/client/createPost.js'))
 
 module.exports = client;

@@ -18,17 +18,17 @@ const userSchema = new mongoose.Schema({
     },
     phone: {
         type: Number,
-        required: true
+        default: ''
     },
     password: {
         type: String,
         required: true
     },
-    reviews: {
+    likes: {
         type: Array,
         default: []
     },
-    appointments: {
+    comments: {
         type: Array,
         default: []
     }

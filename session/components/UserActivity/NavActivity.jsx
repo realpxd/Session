@@ -37,22 +37,23 @@ const NavActivity = (props) => {
   };
   return (
     <>
-      <SafeAreaProvider>
+      <View style={[styles.container, { padding: 0 }]}>
+        <SafeAreaProvider>
 
 
-        <BottomNavigation
-          navigationState={{ index, routes }}
-          barStyle={{ backgroundColor: '#111' }}
-          activeColor="#fff"
-          inactiveColor='#888'
-          activeIndicatorStyle={{ backgroundColor: '#333' }}
-          onIndexChange={setIndex}
-          theme={MyTheme}
-          renderScene={renderScene}
-        />
+          <BottomNavigation
+            navigationState={{ index, routes }}
+            barStyle={{ backgroundColor: '#111' }}
+            activeColor="#fff"
+            inactiveColor='#888'
+            activeIndicatorStyle={{ backgroundColor: '#333' }}
+            onIndexChange={setIndex}
+            theme={MyTheme}
+            renderScene={renderScene}
+          />
 
 
-        {/* <NavigationContainer theme={MyTheme}>
+          {/* <NavigationContainer theme={MyTheme}>
           <Tab.Navigator barStyle={{ backgroundColor: '#111' }}>
             <Tab.Screen name="Feed"
               options={{
@@ -83,7 +84,8 @@ const NavActivity = (props) => {
             </Tab.Screen>
           </Tab.Navigator>
         </NavigationContainer > */}
-      </SafeAreaProvider>
+        </SafeAreaProvider>
+      </View>
     </>
   );
 };

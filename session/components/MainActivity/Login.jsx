@@ -3,6 +3,7 @@ import { RootContext } from '../../RootContext';
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Image, Form, ActivityIndicator } from 'react-native'
 import { HelperText, TextInput } from 'react-native-paper';
+import { SERVER_URL } from '@env';
 import { getGlobalStyles } from '../../globalStyles'
 const styles = getGlobalStyles()
 
@@ -29,7 +30,7 @@ const Login = (props) => {
 
     const handleSubmit = async () => {
         try {
-            const response = await fetch('http://192.168.29.35:8080/client/login', {
+            const response = await fetch(`${SERVER_URL}/client/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

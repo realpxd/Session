@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, Image, Form, StyleSheet, Modal } from 're
 import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Avatar, Icon, TextInput } from 'react-native-paper';
 import Clipboard from '@react-native-clipboard/clipboard';
+import ShowPosts from './ShowPosts';
 import { SERVER_URL } from '@env';
 
 const Feed = (props) => {
@@ -11,6 +12,7 @@ const Feed = (props) => {
   const [posts, setPosts] = useState({})
   const [modalVisible, setModalVisible] = useState(false);
   const [postData, setPostData] = useState('')
+  const [cpVisible, setCPVisible] = useState(false)
 
   const getPosts = async () => {
     try {
@@ -35,108 +37,75 @@ const Feed = (props) => {
 
   return (
     <>
-      <View style={[localStyles.wrapperVertical, { paddingHorizontal: 5 }]}>
-        <View style={[localStyles.wrapperVertical, { gap: 0 }]}>
-          <Text style={[styles.heading3, { color: '#fff' }]}>Feed</Text>
-          {posts.length ? <ShowPosts styles={styles} post={posts} setPosts={setPosts} /> : <Text style={[styles.text, { color: '#fff' }]}>{errorMessage}</Text>}
+      <TouchableOpacity onPress={() => setCPVisible(false)} activeOpacity={1} disabled={!cpVisible}>
+        <View style={[localStyles.wrapperVertical, { paddingHorizontal: 5, paddingBottom:245 }]}>
+          <View style={[localStyles.wrapperVertical, { gap: 0 }]}>
+            <Text style={[styles.heading3, { color: '#fff' }]}>Feed</Text>
+            {posts.length ? <ShowPosts styles={styles} post={posts} setPosts={setPosts} /> : <Text style={[styles.text, { color: '#fff' }]}>{errorMessage}</Text>}
+          </View>
         </View>
-      </View>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => setCPVisible(true)} style={[styles.btnPrimary, { position: 'absolute', bottom: 5, right: 5, zIndex: 98, width: 50, height: 50, justifyContent: 'center', alignItems: 'center', fontSize: 20, fontWeight: 'bolder' }]}>
+        <Text style={styles.btnPrimaryText}>+</Text>
+      </TouchableOpacity>
+      {cpVisible && <CreatePost post={posts} setPosts={setPosts} setCPVisible={setCPVisible} styles={styles} />}
     </>
   );
 }
 
-const ShowPosts = (props) => {
-  const { setPosts, post, styles } = props;
-  const [isLiked, setIsLiked] = useState(0)
 
-  const handleLikePost = async (postId, currentLikes) => {
+
+const CreatePost = (props) => {
+  const { styles, post, setPosts , setCPVisible } = props;
+  const [postData, setPostData] = useState('');
+  const handleCreatePost = async () => {
     try {
-      const response = await fetch(`${SERVER_URL}/client/updatePost`, {
+      const response = await fetch(`${SERVER_URL}/client/createPost`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ likedBy: 'nmn', postId, curLikes: currentLikes, like: !isLiked, comment: '' }),
+        body: JSON.stringify({ postData, username: 'nmn' }),
       });
-      const updatedPost = await response.json();
-
-      setIsLiked(updatedPost.likedBy.includes('nmn'));
-
-      // Find the index of the post with the given id
-      const index = post.findIndex(item => item._id === postId);
-
-      // Create a new post array
-      const newPosts = [...post];
-
-      // Replace the post at the found index with the updated post
-      newPosts[index] = updatedPost;
-
-      // Update the state
-      setPosts(newPosts);
+      const data = await response.json();
+      setPosts([data, ...post]);
+      setPostData('');
+      setCPVisible(false);
     } catch (e) {
       console.warn(e);
     }
-  };
-
-  const handleCommentPost = async (postId) => {
-    // Implement the logic to handle comments here
-  };  
-  
-  const handleCopy = (content) => {
-    Clipboard.setString(content);
-    // Optionally, you can show a message or perform any other actions after copying.
-  };
+  }
 
   return (
-    <GestureHandlerRootView>
-      <FlatList
-        renderItem={({ item }) => (
-          <View style={[styles.verticalContainer, localStyles.postWrapper]}>
-            <View style={[localStyles.horizontalContainer, { flexDirection: 'row' }]}>
-              <Avatar.Icon size={24} icon="account" />
-              {/* <Avatar.Image size={24} source={require('../assets/avatar.png')} /> */}
-              <Text style={styles.text}>{item.username}</Text>
-            </View>
-            <View style={localStyles.postDataContainer}>
-              <Text style={[styles.text, { color: '#fff' }]}>{item.postData}</Text>
-            </View>
-            <View style={[localStyles.horizontalContainer, localStyles.postIconsContainer]}>
-              <TouchableOpacity style={{ flexDirection: 'row', gap: 3 }} onPress={() => handleLikePost(item._id, item.likes)}>
-                <Icon
-                  source={item.likedBy.includes('nmn') ? "heart" : "heart-outline"}
-                  size={20}
-                  color={item.likedBy.includes('nmn') ? "red" : "white"}
-                />
-                <Text style={[styles.text, { color: '#999' }]}>{item.likes ? item.likes : 0}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => handleCommentPost(item._id)}>
-                <Icon
-                  source="message-outline"
-                  size={20}
-                  color='white'
-                />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => handleCopy(item.postData)}>
-                <Icon
-                  source="content-copy"
-                  size={20}
-                  color='white'
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
-        )}
-        data={post}
-        keyExtractor={item => item._id}
-      />
-    </GestureHandlerRootView>
-  );
+    <>
+      <View style={[localStyles.wrapperVertical, { position: 'absolute', right: 20, left: 20, marginVertical: 250, gap: 0, backgroundColor: '#111', paddingHorizontal: 30, paddingVertical: 30, paddingBottom: 50, borderRadius: 20, elevation: 20, zIndex: 99 }]}>
+        <Text style={[styles.heading3, { color: '#fff' }]}>Create Post</Text>
+        <TextInput
+          mode="outlined"
+          label="What's on your mind?"
+          value={postData}
+          multiline={true}
+          editable={true}
+          style={styles.input}
+          theme={{ colors: { onSurface: "white" } }}
+          onChangeText={postData => setPostData(postData)}
+          left={<TextInput.Icon icon="dog" color={"#999"} />}
+        />
+        <TouchableOpacity onPress={() => handleCreatePost()} style={[styles.btnSecondary]}>
+          <Text style={styles.btnSecondaryText}>Create Post</Text>
+        </TouchableOpacity>
+      </View>
+    </>
+  )
 };
 
 
 const localStyles = StyleSheet.create({
   horizontalContainer: {
     gap: 10,
+  },
+  rounded: {
+    borderRadius: 20
   },
   wrapperVertical: {
     flexDirection: 'column',

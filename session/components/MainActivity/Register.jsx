@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, TouchableOpacity, Image, Form, ActivityIndicator } from 'react-native'
 import { TextInput, HelperText } from 'react-native-paper';
+import { SERVER_URL } from '@env';
 
 const Register = (props) => {
     const { styles } = props
@@ -28,7 +29,7 @@ const Register = (props) => {
 
     const handleSubmit = async () => {
         try {
-            const response = await fetch('http://192.168.29.35:8080/client/signup', {
+            const response = await fetch(`${SERVER_URL}/client/signup`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

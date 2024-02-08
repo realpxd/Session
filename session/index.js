@@ -1,26 +1,26 @@
-/**
- * @format
- */
-
-import React, { useState } from "react";
-import { AppRegistry , Button } from 'react-native';
+// index.js
+import React, { useState, createContext } from 'react';
+import { AppRegistry, Button } from 'react-native';
 import App from './App';
 import { name as appName } from './app.json';
 import { PaperProvider } from 'react-native-paper';
-import { RootContext } from './RootContext'
+
+// Create and export AppContext using createContext
+export const AppContext = createContext();
 
 export default function Main() {
-    // const [text, setText] = useState("sda");
-    // setText("sdae");
+    const [warehouse, setWarehouse] = useState({
+        isUserLoggedIn: false,
+        // other properties if needed
+      });
 
-    return (
-        // <RootContext.Provider value={{ text, setText }}>
-            <PaperProvider>
-                <App />
-                {/* <Button title="Update text" onPress={() => setText("New text")} /> */}
-            </PaperProvider>
-        // </RootContext.Provider>
-    );
+  return (
+    <AppContext.Provider value={{ warehouse, setWarehouse }}>
+      <PaperProvider>
+        <App />
+      </PaperProvider>
+    </AppContext.Provider>
+  );
 }
 
 AppRegistry.registerComponent(appName, () => App);

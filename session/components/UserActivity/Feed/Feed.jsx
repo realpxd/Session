@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity, Image, Form, StyleSheet, Modal } from 'react-native'
 import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Avatar, Icon, TextInput } from 'react-native-paper';
+import Clipboard from '@react-native-clipboard/clipboard';
+import { SERVER_URL } from '@env';
 
 const Feed = (props) => {
   const { styles } = props
@@ -39,38 +41,6 @@ const Feed = (props) => {
           {posts.length ? <ShowPosts styles={styles} post={posts} setPosts={setPosts} /> : <Text style={[styles.text, { color: '#fff' }]}>{errorMessage}</Text>}
         </View>
       </View>
-
-      {/* <TouchableOpacity style={{ alignItems: 'center', justifyContent: 'center', backgroundColor: '#F4B942', padding: 5, height: 50, width: 50, borderRadius: 30, position: 'absolute', bottom: 20, right: 20 }} onPress={() => console.warn("clicked")}>
-
-        <Icon
-          source="plus"
-          color='#000'
-          size={30}
-        />
-      </TouchableOpacity> */}
-{/* 
-      <Modal
-        transparent={true}
-        visible={modalVisible}
-      >
-        <View>
-          <TextInput
-            mode="outlined"
-            label="Write a post..."
-            value={postData}
-            style={styles.input}
-            theme={{ colors: { onSurface: "white" } }}
-            placeholderTextColor="#FFF"
-            onChangeText={postData => setPostData(postData)}
-            left={<TextInput.Icon icon="pen" />}
-          />
-          <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
-            <Text>Post</Text>
-          </TouchableOpacity>
-        </View>
-      </Modal> */}
-
-
     </>
   );
 }
@@ -81,7 +51,7 @@ const ShowPosts = (props) => {
 
   const handleLikePost = async (postId, currentLikes) => {
     try {
-      const response = await fetch('http://192.168.29.35:8080/client/updatePost', {
+      const response = await fetch(`${SERVER_URL}/client/updatePost`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -110,6 +80,11 @@ const ShowPosts = (props) => {
 
   const handleCommentPost = async (postId) => {
     // Implement the logic to handle comments here
+  };  
+  
+  const handleCopy = (content) => {
+    Clipboard.setString(content);
+    // Optionally, you can show a message or perform any other actions after copying.
   };
 
   return (
@@ -126,13 +101,13 @@ const ShowPosts = (props) => {
               <Text style={[styles.text, { color: '#fff' }]}>{item.postData}</Text>
             </View>
             <View style={[localStyles.horizontalContainer, localStyles.postIconsContainer]}>
-              <TouchableOpacity style={{flexDirection:'row', gap:3}} onPress={() => handleLikePost(item._id, item.likes)}>
+              <TouchableOpacity style={{ flexDirection: 'row', gap: 3 }} onPress={() => handleLikePost(item._id, item.likes)}>
                 <Icon
                   source={item.likedBy.includes('nmn') ? "heart" : "heart-outline"}
                   size={20}
                   color={item.likedBy.includes('nmn') ? "red" : "white"}
                 />
-                <Text style={[styles.text, {color: '#999'}]}>{item.likes ? item.likes : 0}</Text>
+                <Text style={[styles.text, { color: '#999' }]}>{item.likes ? item.likes : 0}</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => handleCommentPost(item._id)}>
                 <Icon
@@ -141,11 +116,13 @@ const ShowPosts = (props) => {
                   color='white'
                 />
               </TouchableOpacity>
-              <Icon
-                source="content-copy"
-                size={20}
-                color='white'
-              />
+              <TouchableOpacity onPress={() => handleCopy(item.postData)}>
+                <Icon
+                  source="content-copy"
+                  size={20}
+                  color='white'
+                />
+              </TouchableOpacity>
             </View>
           </View>
         )}

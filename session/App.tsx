@@ -1,36 +1,27 @@
-import React, { useState } from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-  Button
-} from 'react-native';
-import { useContext } from 'react';
-import { RootContext } from './RootContext';
+// App.tsx
+import React, { useState, useContext } from 'react';
 import { getGlobalStyles } from './globalStyles';
 import MainActivity from './components/MainActivity/MainActivity';
 import NavActivity from './components/UserActivity/NavActivity';
+import { AppContext } from './index'; // Import AppContext directly
 
 const styles = getGlobalStyles();
 
 const App = () => {
-  // const text = useContext(RootContext);
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+  // const { warehouse, setWarehouse } = useContext(AppContext);
+
+  // console.log('App.tsx: warehouse: ', warehouse);
+  let isUserLoggedIn = true;
 
   return (
     <>
       {!isUserLoggedIn ?
-          <MainActivity styles={styles} />
+        <MainActivity styles={styles}  />
         :
-          <NavActivity styles={styles} />
+        <NavActivity styles={styles} />
       }
     </>
   );
 }
-
 
 export default App;

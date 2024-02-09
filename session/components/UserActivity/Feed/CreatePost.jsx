@@ -19,7 +19,7 @@ const CreatePost = (props) => {
                 body: JSON.stringify({ postData, username: 'nmn' }),
             });
             const data = await response.json();
-            setPosts([data, ...post]);
+            setPosts(prev => [data.post, ...prev])
             setPostData('');
             setCPVisible(false);
         } catch (e) {

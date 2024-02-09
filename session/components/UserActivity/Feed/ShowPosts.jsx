@@ -11,6 +11,7 @@ const ShowPosts = (props) => {
     const [copying, setCopying] = useState(false)
     const [copyiedPostId, setCopyiedPostId] = useState('')
     const [scrolled, setScrolled] = useState(false)
+    const [isLikePressed, setIsLikePressed] = useState(false)
 
     //handle scroll flatlist logic
     const handleScroll = (event) => {
@@ -22,6 +23,7 @@ const ShowPosts = (props) => {
     }
 
     const handleLikePost = async (postId, currentLikes) => {
+        setIsLikePressed(true)
         try {
             const response = await fetch(`${SERVER_URL}/client/updatePost`, {
                 method: 'POST',
@@ -35,18 +37,22 @@ const ShowPosts = (props) => {
             setIsLiked(updatedPost.likedBy.includes('nmn'));
 
             // Find the index of the post with the given id
-            const index = post.findIndex(item => item._id === postId);
+            // const index = post.findIndex(item => item._id === postId);
 
-            // Create a new post array
-            const newPosts = [...post];
+            // // Create a new post array
+            // const newPosts = [...post];
 
-            // Replace the post at the found index with the updated post
-            newPosts[index] = updatedPost;
+            // // Replace the post at the found index with the updated post
+            // newPosts[index] = updatedPost;
 
-            // Update the state
-            setPosts(newPosts);
+            // // Update the state
+            // setPosts(newPosts);
+
+            setPosts(post.map(item => item._id === postId ? updatedPost : item))
+            setIsLikePressed(false)
         } catch (e) {
             console.warn(e);
+            setIsLikePressed(false)
         }
     };
 

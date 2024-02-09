@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, TouchableOpacity, Image, Form, StyleSheet, Modal } from 'react-native'
+import { View, Text, TouchableOpacity, Image, Form, StyleSheet, Modal, Dimensions, ActivityIndicator } from 'react-native'
 import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Avatar, Icon, TextInput } from 'react-native-paper';
 import Clipboard from '@react-native-clipboard/clipboard';
@@ -10,6 +10,16 @@ const ShowPosts = (props) => {
     const [isLiked, setIsLiked] = useState(0)
     const [copying, setCopying] = useState(false)
     const [copyiedPostId, setCopyiedPostId] = useState('')
+    const [scrolled, setScrolled] = useState(false)
+
+    //handle scroll flatlist logic
+    const handleScroll = (event) => {
+        if (event.nativeEvent.contentOffset.y >= 50) {
+            setScrolled(true)
+        }else{
+            setScrolled(false)
+        }
+    }
 
     const handleLikePost = async (postId, currentLikes) => {
         try {
@@ -40,6 +50,23 @@ const ShowPosts = (props) => {
         }
     };
 
+    const handleFetchMore = async () => {
+        try {
+          const response = await fetch('http://192.168.29.35:8080/client/getPosts', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+          const data = await response.json();
+          console.log(data)
+          setPosts(prev => [...prev, ...data.reverse()])
+        } catch (e) {
+          setErrorMessage(e.message)
+        }
+
+    };
+
     const handleCommentPost = async (postId) => {
         // Implement the logic to handle comments here
     };
@@ -57,7 +84,7 @@ const ShowPosts = (props) => {
 
     return (
         <GestureHandlerRootView>
-            <FlatList
+            <FlatList style={[{ height: Dimensions.get('window').height - 30,}]}
                 renderItem={({ item }) => (
                     <View style={[styles.verticalContainer, localStyles.postWrapper]}>
                         <View style={[localStyles.horizontalContainer, { flexDirection: 'row' }]}>
@@ -95,8 +122,14 @@ const ShowPosts = (props) => {
                     </View>
                 )}
                 data={post}
-                keyExtractor={item => item._id}
+                keyExtractor={item => item._id + Math.random() * 1000}
                 key={item => item._id}
+                onScroll={handleScroll}
+                onEndReached={handleFetchMore}
+                onEndReachedThreshold={0}
+                ListFooterComponent={<ActivityIndicator size={'large'} />}
+                ListHeaderComponent={<Text style={[styles.heading3, {color: '#fff'}]}>Feed</Text>}
+                // refreshing={refreshing}
             />
         </GestureHandlerRootView>
     );
@@ -111,14 +144,14 @@ const localStyles = StyleSheet.create({
     wrapperVertical: {
         flexDirection: 'column',
         backgroundColor: '#222',
-        gap: 10
+        gap: 10,
 
     },
     postWrapper: {
         backgroundColor: '#333',
         padding: 10,
         borderRadius: 20,
-        marginVertical: 20
+        marginVertical: 20,
 
     },
     postDataContainer: {

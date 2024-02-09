@@ -5,7 +5,7 @@ import { Avatar, Icon } from 'react-native-paper';
 const Inbox = (props) => {
   const { styles } = props
   return (
-    <View style={[localStyles.wrapperVertical, { paddingHorizontal: 5 }]}>
+    <View style={[localStyles.wrapperVertical, { paddingHorizontal: 15 }]}>
       <View style={[localStyles.wrapperVertical , {gap:0}]}>
         <Text style={[styles.heading3, { color: '#fff' }]}>Inbox</Text>
         <View style={localStyles.chatWrapper}>

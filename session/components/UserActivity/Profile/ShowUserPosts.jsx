@@ -8,7 +8,7 @@ import { SERVER_URL } from '@env';
 const username = "nmn"
 
 const ShowUserPosts = (props) => {
-    const { setPosts, post, styles,userData } = props;
+    const { setPosts, post, styles,userData , setErrorMessage } = props;
     const [isLiked, setIsLiked] = useState(0)
     const [copying, setCopying] = useState(false)
     const [copyiedPostId, setCopyiedPostId] = useState('')

@@ -15,6 +15,7 @@ const userData = {
 }
 const Profile = (props) => {
   const { styles } = props
+  const [errorMessage, setErrorMessage] = useState('')
   const [posts, setPosts] = useState({})
   const [cpVisible, setCPVisible] = useState(false)
 
@@ -45,7 +46,7 @@ const Profile = (props) => {
     <>
       <TouchableOpacity onPress={() => setCPVisible(false)} activeOpacity={1} disabled={!cpVisible}>
         <View style={[{ position: 'relative' }]}>
-          <ShowUserPosts styles={styles} post={posts} setPosts={setPosts} userData={userData} />
+          <ShowUserPosts setErrorMessage={setErrorMessage} styles={styles} post={posts} setPosts={setPosts} userData={userData} />
         </View>
       </TouchableOpacity>
 

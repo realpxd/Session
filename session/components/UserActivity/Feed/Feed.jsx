@@ -41,7 +41,7 @@ const Feed = (props) => {
       <TouchableOpacity onPress={() => setCPVisible(false)} activeOpacity={1} disabled={!cpVisible}>
         <View style={[localStyles.wrapperVertical, { paddingHorizontal: 15, paddingBottom: 245 }]}>
           <View style={[localStyles.wrapperVertical, { gap: 0 }]}>
-            {posts.length ? <ShowPosts styles={styles} post={posts} setPosts={setPosts} /> : <Text style={[styles.text, { color: '#fff' }]}>{errorMessage ? errorMessage : <View style={[{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', margin: 'auto', width: Dimensions.get('window').width - 30 }]} >
+            {posts.length ? <ShowPosts setErrorMessage={setErrorMessage} styles={styles} post={posts} setPosts={setPosts} /> : <Text style={[styles.text, { color: '#fff' }]}>{errorMessage ? errorMessage : <View style={[{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', margin: 'auto', width: Dimensions.get('window').width - 30 }]} >
               <Text style={[styles.heading3, { color: '#fff' }]}>Feed</Text>
               <ActivityIndicator size={'large'} color='#F4B942' />
             </View>}</Text>}

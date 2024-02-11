@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, TouchableOpacity, Image, Form, StyleSheet, Modal, Dimensions, ActivityIndicator } from 'react-native'
+import { View, Text, TouchableOpacity, Image, Form, StyleSheet, Modal, Dimensions, ActivityIndicator, ImageBackground, } from 'react-native'
 import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler';
-import { Avatar, Icon, TextInput } from 'react-native-paper';
+import { Avatar, Icon, TextInput, Divider } from 'react-native-paper';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { SERVER_URL } from '@env';
 
 const username = "nmn"
 
-const ShowPosts = (props) => {
-    const { setPosts, post, styles } = props;
+const ShowUserPosts = (props) => {
+    const { setPosts, post, styles,userData } = props;
     const [isLiked, setIsLiked] = useState(0)
     const [copying, setCopying] = useState(false)
     const [copyiedPostId, setCopyiedPostId] = useState('')
@@ -51,17 +51,17 @@ const ShowPosts = (props) => {
 
     const handleFetchMore = async () => {
         try {
-          const response = await fetch('http://192.168.29.35:8080/client/getPosts', {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          });
-          const data = await response.json();
-          console.log(data)
-          setPosts(prev => [...prev, ...data.reverse()])
+            const response = await fetch('http://192.168.29.35:8080/client/getPosts', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            const data = await response.json();
+            console.log(data)
+            setPosts(prev => [...prev, ...data.reverse()])
         } catch (e) {
-          setErrorMessage(e.message)
+            setErrorMessage(e.message)
         }
 
     };
@@ -70,7 +70,7 @@ const ShowPosts = (props) => {
         // Implement the logic to handle comments here
     };
 
-    const handleCopy = (content , id) => {
+    const handleCopy = (content, id) => {
         Clipboard.setString(content);
         setCopying(true);
         setCopyiedPostId(id);
@@ -83,9 +83,9 @@ const ShowPosts = (props) => {
 
     return (
         <GestureHandlerRootView>
-            <FlatList style={[{ height: Dimensions.get('window').height - 30,}]}
+            <FlatList style={[{ height: Dimensions.get('window').height - 100 }]}
                 renderItem={({ item }) => (
-                    <View style={[styles.verticalContainer, localStyles.postWrapper]}>
+                    <View style={[styles.verticalContainer, localStyles.postWrapper, {marginHorizontal:10}]}>
                         <View style={[localStyles.horizontalContainer, { flexDirection: 'row' }]}>
                             <Avatar.Icon size={24} icon="account" />
                             {/* <Avatar.Image size={24} source={require('../assets/avatar.png')} /> */}
@@ -110,7 +110,7 @@ const ShowPosts = (props) => {
                                     color='white'
                                 />
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => handleCopy(item.postData , item._id)}>
+                            <TouchableOpacity onPress={() => handleCopy(item.postData, item._id)}>
                                 <Icon
                                     source={copying && copyiedPostId == item._id ? 'blur' : 'content-copy'}
                                     size={20}
@@ -126,12 +126,49 @@ const ShowPosts = (props) => {
                 onEndReached={handleFetchMore}
                 onEndReachedThreshold={0}
                 ListFooterComponent={<ActivityIndicator size={'large'} />}
-                ListHeaderComponent={<Text style={[styles.heading3, {color: '#fff'}]}>Feed</Text>}
-                // refreshing={refreshing}
+                ListHeaderComponent={<HeaderComponent styles={styles} userData={userData} />}
+            // refreshing={refreshing}
             />
         </GestureHandlerRootView>
     );
 };
+
+const HeaderComponent = (props) => {
+    const { styles, userData } = props
+    const image = { uri: 'https://legacy.reactjs.org/logo-og.png' };
+    return (
+        <>
+            <View style={[{}]}>
+                <ImageBackground source={image} resizeMode="cover" style={styles.image}>
+                    <View style={[{ height: 200, backgroundColor: 'red' }]}>
+
+                    </View>
+                </ImageBackground>
+            </View>
+            <View style={[{ position: 'absolute', top: 130, left: 10, zIndex: 2, }]}>
+
+                <Image
+                    style={[{
+                        width: 150,
+                        height: 150,
+                        borderRadius: 100,
+                        backgroundColor: 'blue',
+                    }]}
+                    resizeMode='cover'
+                    source={image}
+                />
+            </View>
+            <View style={[{ marginVertical: 20, marginTop: 90, paddingHorizontal: 10 }]}>
+                <View style={[{ flexDirection: 'row', gap: 15, alignItems: 'center' }]}>
+                    <Text style={[{ color: 'white', fontWeight: 'bold', fontSize: 25 }]}>{userData.fullname}</Text>
+                    <Text style={[{ color: '#999', fontWeight: 'bold', fontSize: 20 }]}>@{userData.username}</Text>
+                </View>
+                <Text style={[{ color: '#e0e0e0', fontSize: 15, textAlign: 'justify' }]}>{userData.bio}</Text>
+            </View>
+            <Divider />
+        </>
+    )
+}
 
 
 
@@ -166,4 +203,4 @@ const localStyles = StyleSheet.create({
     }
 })
 
-export default ShowPosts
+export default ShowUserPosts

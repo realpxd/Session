@@ -6,6 +6,8 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import ShowPosts from './ShowPosts';
 import { SERVER_URL } from '@env';
 
+const username = "nmn"
+
 const CreatePost = (props) => {
     const { styles, post, setPosts, setCPVisible } = props;
     const [postData, setPostData] = useState('');
@@ -16,7 +18,7 @@ const CreatePost = (props) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ postData, username: 'nmn' }),
+                body: JSON.stringify({ postData, username: username }),
             });
             const data = await response.json();
             setPosts(prev => [data.post, ...prev])

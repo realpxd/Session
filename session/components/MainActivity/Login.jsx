@@ -87,7 +87,7 @@ const Login = (props) => {
             </HelperText>}
             <TouchableOpacity onPress={() => handleLogin()} style={[styles.btnPrimary, { marginTop: 50 }]}>
                 {isLoginBtnClicked ? <ActivityIndicator size="30" color="#000" /> :
-                    <Text style={styles.btnSecondaryText}>Continue</Text>}
+                    <Text style={[styles.btnSecondaryText , {color:'#000' , fontWeight:'bold'}]}>Continue</Text>}
             </TouchableOpacity>
         </View>
     )

@@ -11,7 +11,7 @@ const App = () => {
   // const { warehouse, setWarehouse } = useContext(AppContext);
 
   // console.log('App.tsx: warehouse: ', warehouse);
-  let isUserLoggedIn = true;
+  let isUserLoggedIn = false;
 
   return (
     <>

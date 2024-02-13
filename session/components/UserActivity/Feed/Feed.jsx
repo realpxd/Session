@@ -9,6 +9,8 @@ import { SERVER_URL } from '@env';
 
 const Feed = (props) => {
   const { styles } = props
+  console.log("props feed:" + props)
+  console.log(props.navigationState)
   const [errorMessage, setErrorMessage] = useState('')
   const [posts, setPosts] = useState({})
   const [modalVisible, setModalVisible] = useState(false);
@@ -17,8 +19,8 @@ const Feed = (props) => {
 
   const getPosts = async () => {
     try {
-      const response = await fetch('http://192.168.29.35:8080/client/getPosts', {
-        method: 'GET',
+      const response = await fetch(`${SERVER_URL}/client/getPosts`, {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -41,7 +43,7 @@ const Feed = (props) => {
       <TouchableOpacity onPress={() => setCPVisible(false)} activeOpacity={1} disabled={!cpVisible}>
         <View style={[localStyles.wrapperVertical, { paddingHorizontal: 15, paddingBottom: 245 }]}>
           <View style={[localStyles.wrapperVertical, { gap: 0 }]}>
-            {posts.length ? <ShowPosts setErrorMessage={setErrorMessage} styles={styles} post={posts} setPosts={setPosts} /> : <Text style={[styles.text, { color: '#fff' }]}>{errorMessage ? errorMessage : <View style={[{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', margin: 'auto', width: Dimensions.get('window').width - 30 }]} >
+            {posts.length ? <ShowPosts {...props} setErrorMessage={setErrorMessage} styles={styles} post={posts} setPosts={setPosts} /> : <Text style={[styles.text, { color: '#fff' }]}>{errorMessage ? errorMessage : <View style={[{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', margin: 'auto', width: Dimensions.get('window').width - 30 }]} >
               <Text style={[styles.heading3, { color: '#fff' }]}>Feed</Text>
               <ActivityIndicator size={'large'} color='#F4B942' />
             </View>}</Text>}

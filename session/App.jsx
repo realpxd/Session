@@ -17,6 +17,7 @@ const App = () => {
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   AsyncStorage.setItem('user', JSON.stringify({
     "username": "nmn",
+    fullname: "Naman Saini",
     "email": "thisisnamansaini@gmail.com",
     "password": "1234",
     "profilePic": " ",

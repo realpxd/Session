@@ -37,9 +37,14 @@ const Register = (props) => {
                 body: JSON.stringify({ name, email, password }),
             });
             const data = await response.json();
-            setErrorMessage(data.message)
-            setIsRegisterBtnClicked(false);
-            props.navigation.navigate('NavActivity')
+            if(data.status === 200){
+                setErrorMessage(data.message)
+                setIsRegisterBtnClicked(false);
+                props.navigation.navigate('NavActivity')
+            }else{
+                setIsLoginBtnClicked(false);
+                setErrorMessage(data.message)
+            }
         } catch (e) {
             setErrorMessage(e.message)
         }

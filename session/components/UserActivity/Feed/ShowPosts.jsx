@@ -9,6 +9,7 @@ const username = "nmn"
 
 const ShowPosts = (props) => {
     const { setPosts, post, styles, setErrorMessage } = props;
+    console.log(props)
     const [isLiked, setIsLiked] = useState(0)
     const [copying, setCopying] = useState(false)
     const [copyiedPostId, setCopyiedPostId] = useState('')
@@ -51,17 +52,17 @@ const ShowPosts = (props) => {
 
     const handleFetchMore = async () => {
         try {
-          const response = await fetch('http://192.168.29.35:8080/client/getPosts', {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          });
-          const data = await response.json();
-          console.log(data)
-          setPosts(prev => [...prev, ...data.reverse()])
+            const response = await fetch(`${SERVER_URL}/client/getPosts`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            const data = await response.json();
+            console.log(data)
+            setPosts(prev => [...prev, ...data.reverse()])
         } catch (e) {
-          setErrorMessage(e.message)
+            setErrorMessage(e.message)
         }
 
     };
@@ -70,7 +71,7 @@ const ShowPosts = (props) => {
         // Implement the logic to handle comments here
     };
 
-    const handleCopy = (content , id) => {
+    const handleCopy = (content, id) => {
         Clipboard.setString(content);
         setCopying(true);
         setCopyiedPostId(id);
@@ -83,11 +84,14 @@ const ShowPosts = (props) => {
 
     return (
         <GestureHandlerRootView>
-            <FlatList style={[{ height: Dimensions.get('window').height - 30,}]}
+            <FlatList style={[{ height: Dimensions.get('window').height - 30, }]}
                 renderItem={({ item }) => (
                     <View style={[styles.verticalContainer, localStyles.postWrapper]}>
                         <View style={[localStyles.horizontalContainer, { flexDirection: 'row' }]}>
-                            <Avatar.Icon size={24} icon="account" />
+                            <TouchableOpacity onPress={() => props.navigation.navigate('Profile')}>
+
+                                <Avatar.Icon size={24} icon="account" />
+                            </TouchableOpacity>
                             {/* <Avatar.Image size={24} source={require('../assets/avatar.png')} /> */}
                             <Text style={styles.text}>{item.username}</Text>
                         </View>
@@ -110,7 +114,7 @@ const ShowPosts = (props) => {
                                     color='white'
                                 />
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => handleCopy(item.postData , item._id)}>
+                            <TouchableOpacity onPress={() => handleCopy(item.postData, item._id)}>
                                 <Icon
                                     source={copying && copyiedPostId == item._id ? 'blur' : 'content-copy'}
                                     size={20}
@@ -126,8 +130,8 @@ const ShowPosts = (props) => {
                 onEndReached={handleFetchMore}
                 onEndReachedThreshold={0}
                 ListFooterComponent={<ActivityIndicator size={'large'} />}
-                ListHeaderComponent={<Text style={[styles.heading3, {color: '#fff'}]}>Feed</Text>}
-                // refreshing={refreshing}
+                ListHeaderComponent={<Text style={[styles.heading3, { color: '#fff' }]}>Feed</Text>}
+            // refreshing={refreshing}
             />
         </GestureHandlerRootView>
     );

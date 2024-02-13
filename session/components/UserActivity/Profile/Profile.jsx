@@ -1,31 +1,35 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, ImageBackground, TouchableOpacity, Image, Form, StyleSheet, } from 'react-native'
+import { View, Text, ImageBackground, TouchableOpacity, Image, Form, StyleSheet, ActivityIndicator, Dimensions } from 'react-native'
 import { Avatar, Icon, TextInput } from 'react-native-paper';
 import { Divider } from 'react-native-paper'
 import ShowUserPosts from './ShowUserPosts'
 import CreatePost from '../Feed/CreatePost'
+import { SERVER_URL } from '@env';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const userData = {
-  username: 'nmn',
-  fullname: 'Naman Saini',
-  email: 'thisisnamansaini@gmail.com',
-  password: '',
-  bio: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore illum provident asperiores facere. Asperiores sequi beatae temporibus. '
 
-}
 const Profile = (props) => {
   const { styles } = props
   const [errorMessage, setErrorMessage] = useState('')
   const [posts, setPosts] = useState({})
   const [cpVisible, setCPVisible] = useState(false)
 
+  const [userData, setUserData] = useState({})
+  AsyncStorage.getItem('user').then((data) => {
+    if (data) {
+      setUserData(JSON.parse(data))
+    }
+  })
+  console.log(userData)
+
   const getPosts = async () => {
     try {
-      const response = await fetch('http://192.168.29.35:8080/client/getPosts', {
-        method: 'GET',
+      const response = await fetch(`${SERVER_URL}/client/getPosts`, {
+        method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
+        body: JSON.stringify({ username: userData.username })
       });
       const data = await response.json();
       console.log(data)
@@ -45,9 +49,18 @@ const Profile = (props) => {
   return (
     <>
       <TouchableOpacity onPress={() => setCPVisible(false)} activeOpacity={1} disabled={!cpVisible}>
-        <View style={[{ position: 'relative' }]}>
+        {/* <View style={[{ position: 'relative' }]}>
           <ShowUserPosts setErrorMessage={setErrorMessage} styles={styles} post={posts} setPosts={setPosts} userData={userData} />
-        </View>
+        </View> */}
+
+        {posts.length ? <View style={[{ position: 'relative' }]}>
+          <ShowUserPosts setErrorMessage={setErrorMessage} styles={styles} post={posts} setPosts={setPosts} userData={userData} />
+        </View> : <Text style={[styles.text, { color: '#fff' }]}>{errorMessage ? errorMessage : <View style={[{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', margin: 'auto', width: Dimensions.get('window').width - 30 }]} >
+          <Text style={[styles.heading3, { color: '#fff' }]}>Profile</Text>
+          <ActivityIndicator size={'large'} color='#F4B942' />
+        </View>}</Text>}
+
+
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => setCPVisible(true)} style={[styles.btnPrimary, { position: 'absolute', bottom: 15, right: 15, zIndex: 98, width: 60, height: 60, justifyContent: 'center', alignItems: 'center', fontSize: 20, fontWeight: 'bolder', backgroundColor: '#111' }]}>

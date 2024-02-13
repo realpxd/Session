@@ -38,8 +38,13 @@ const Login = (props) => {
                 body: JSON.stringify({ email, pass }),
             });
             const data = await response.json();
-            setIsLoginBtnClicked(false);
-            props.navigation.navigate('NavActivity')
+            if(data.status === 200){
+                setIsLoginBtnClicked(false);
+                props.navigation.navigate('NavActivity')
+            }else{
+                setIsLoginBtnClicked(false);
+                setErrorMessage(data.message)
+            }
         } catch (e) {
             setErrorMessage(e.message)
         }

@@ -4,6 +4,7 @@ import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Avatar, Icon, TextInput, Divider } from 'react-native-paper';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { SERVER_URL } from '@env';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const username = "nmn"
 
@@ -15,6 +16,14 @@ const ShowUserPosts = (props) => {
     const [scrolled, setScrolled] = useState(false)
     const [isLikePressed, setIsLikePressed] = useState(false)
 
+    const [currUserData, setUserData] = useState({})
+    AsyncStorage.getItem('user').then((data) => {
+      if (data) {
+        setUserData(JSON.parse(data))
+      }
+    })
+    console.log(currUserData)
+    
     const handleLikePost = async (postId, currentLikes) => {
         setIsLikePressed(true)
         try {
@@ -51,8 +60,8 @@ const ShowUserPosts = (props) => {
 
     const handleFetchMore = async () => {
         try {
-            const response = await fetch('http://192.168.29.35:8080/client/getPosts', {
-                method: 'GET',
+            const response = await fetch(`${SERVER_URL}/client/getPosts`, {
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -83,7 +92,7 @@ const ShowUserPosts = (props) => {
 
     return (
         <GestureHandlerRootView>
-            <FlatList style={[{ height: Dimensions.get('window').height - 100 }]}
+            <FlatList style={[{ height: Dimensions.get('window').height - 30 }]}
                 renderItem={({ item }) => (
                     <View style={[styles.verticalContainer, localStyles.postWrapper, {marginHorizontal:10}]}>
                         <View style={[localStyles.horizontalContainer, { flexDirection: 'row' }]}>

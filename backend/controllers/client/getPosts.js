@@ -1,13 +1,17 @@
 const Posts = require('../../models/Posts.js');
 
 const getPosts = async (req, res) => {
-    const { username, postData, email } = req.body;
+    const { username, postData, email , postPageNum = 1, limit = 8 } = req.body;
     try {
         if (username) {
-            const posts = await Posts.find({ username });
+            const posts = await Posts.find({ username })
+            .skip((postPageNum - 1) * limit)
+            .limit(limit);
             res.status(200).json(posts);
         }else{
-            const posts = await Posts.find();
+            const posts = await Posts.find()
+            .skip((postPageNum - 1) * limit)
+            .limit(limit);
             res.status(200).json(posts);
         }
     } catch (error) {

@@ -35,6 +35,7 @@ const App = () => {
     }
   }
   );
+  console.log(isUserLoggedIn)
 
   return (
     <>

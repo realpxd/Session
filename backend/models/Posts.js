@@ -15,12 +15,10 @@ const postsSchema = new mongoose.Schema({
         minlength: 3
     },
     postData: {
-        type: String,
-        minlength: 3
+        type: String
     },
     image: {
-        type: String,
-        minlength: 3
+        type: String
     },
     likes: {
         type: Number,

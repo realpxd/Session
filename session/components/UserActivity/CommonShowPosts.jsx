@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from 'react'
-import { View, Text, TouchableOpacity, Image, Form, StyleSheet, Modal, Dimensions, ActivityIndicator, ImageBackground, } from 'react-native'
+// CommonShowPosts.js
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, ActivityIndicator, Dimensions, StyleSheet, ImageBackground, Image } from 'react-native';
 import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler';
-import { Avatar, Icon, TextInput, Divider } from 'react-native-paper';
+import { Avatar, Icon, Divider } from 'react-native-paper';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { SERVER_URL } from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SERVER_URL } from '@env';
 
 const username = "nmn"
 
-const ShowUserPosts = (props) => {
-    const { postPageNum, setPostPageNum, hasMorePosts, setPosts, post, styles, userData, setErrorMessage } = props;
-    const [isLiked, setIsLiked] = useState(0)
-    const [copying, setCopying] = useState(false)
-    const [copyiedPostId, setCopyiedPostId] = useState('')
-    const [scrolled, setScrolled] = useState(false)
-    const [isLikePressed, setIsLikePressed] = useState(false)
+const CommonShowPosts = (props) => {
+    const { setPosts, post, styles, setErrorMessage, hasMorePosts, setHasMorePosts, postPageNum, setPostPageNum, userData, isProfileSection } = props;
+    const [isLiked, setIsLiked] = useState(0);
+    const [copying, setCopying] = useState(false);
+    const [copyiedPostId, setCopyiedPostId] = useState('');
+    const [isLikePressed, setIsLikePressed] = useState(false);
 
     const [currUserData, setUserData] = useState({})
     useEffect(() => {
@@ -30,7 +30,7 @@ const ShowUserPosts = (props) => {
     console.log(currUserData)
 
     const handleLikePost = async (postId, currentLikes) => {
-        setIsLikePressed(true)
+        setIsLikePressed(true);
         try {
             const response = await fetch(`${SERVER_URL}/client/updatePost`, {
                 method: 'POST',
@@ -40,31 +40,21 @@ const ShowUserPosts = (props) => {
                 body: JSON.stringify({ likedBy: username, postId, curLikes: currentLikes, like: !isLiked, comment: '' }),
             });
             const updatedPost = await response.json();
-
             setIsLiked(updatedPost.likedBy.includes(username));
 
-            // Find the index of the post with the given id
-            // const index = post.findIndex(item => item._id === postId);
-
-            // // Create a new post array
-            // const newPosts = [...post];
-
-            // // Replace the post at the found index with the updated post
-            // newPosts[index] = updatedPost;
-
-            // // Update the state
-            // setPosts(newPosts);
-
-            setPosts(post.map(item => item._id === postId ? updatedPost : item))
-            setIsLikePressed(false)
+            setPosts(post.map(item => item._id === postId ? updatedPost : item));
+            setIsLikePressed(false);
         } catch (e) {
             console.warn(e);
-            setIsLikePressed(false)
+            setIsLikePressed(false);
         }
     };
 
     const handleFetchMore = async () => {
+        console.log('Fetching more posts ');
+        console.log('hasMorePosts', hasMorePosts + ' postPageNum', postPageNum);
         if (!hasMorePosts) {
+            setPosts(prev => [...prev, ...prev.slice(-8)]);
             return;
         }
         try {
@@ -73,22 +63,21 @@ const ShowUserPosts = (props) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ postPageNum, limit: 8 }), // Pass the current page and limit
+                body: JSON.stringify({ postPageNum, limit: 8, username: isProfileSection ? username : '' }),
             });
             const data = await response.json();
-            console.log(data)
-            if (data.length < 10) {
-                // No more posts to fetch
-                console.log('No more posts to fetch');
+            if (data.length < 2) {
                 setHasMorePosts(false);
+                console.log('No more posts');
+                setPosts(prev => [...prev, ...prev.slice(-8)]);
             } else {
-                setPosts(prev => [...prev, ...data.reverse()])
-                setPostPageNum(postPageNum + 1); // Increment the page number
+                setPosts(prev => [...prev, ...data.reverse()]);
+                setPostPageNum(postPageNum + 1);
+                console.log('Fetched more posts');
             }
         } catch (e) {
-            setErrorMessage(e.message)
+            setErrorMessage(e.message);
         }
-
     };
 
     const handleCommentPost = async (postId) => {
@@ -101,45 +90,42 @@ const ShowUserPosts = (props) => {
         setCopyiedPostId(id);
         setTimeout(() => {
             setCopying(false);
-            setCopyiedPostId('')
-        }, 1000);
-        // Optionally, you can show a message or perform any other actions after copying.
+            setCopyiedPostId('');
+        }, 100);
     };
 
     return (
         <GestureHandlerRootView>
-            <FlatList style={[{ height: Dimensions.get('window').height - 30 }]}
+            <FlatList
+                style={[{ height: Dimensions.get('window').height - 30 }]}
                 renderItem={({ item }) => (
-                    <View style={[styles.verticalContainer, localStyles.postWrapper, { marginHorizontal: 10 }]}>
+                    <View style={[styles.verticalContainer, localStyles.postWrapper]}>
                         <View style={[localStyles.horizontalContainer, { flexDirection: 'row' }]}>
-                            <Avatar.Icon size={24} icon="account" />
-                            {/* <Avatar.Image size={24} source={require('../assets/avatar.png')} /> */}
+                            <TouchableOpacity onPress={() => props.navigation.navigate('Profile')}>
+                                <Avatar.Icon size={24} icon="account" />
+                            </TouchableOpacity>
                             <Text style={styles.text}>{item.username}</Text>
                         </View>
                         <View style={localStyles.postDataContainer}>
-                            <Text style={[styles.text, { color: '#fff' }]}>{item.postData ? item.postData : "..."}</Text>
+                            <Text style={[styles.text, { color: '#fff' }]}>{item.postData ? item.postData : '...'}</Text>
                         </View>
                         <View style={[localStyles.horizontalContainer, localStyles.postIconsContainer]}>
                             <TouchableOpacity style={{ flexDirection: 'row', gap: 3 }} onPress={() => handleLikePost(item._id, item.likes)}>
                                 <Icon
-                                    source={item.likedBy && item.likedBy.includes(username) ? "heart" : "heart-outline"}
+                                    source={item.likedBy && item.likedBy.includes(username) ? 'heart' : 'heart-outline'}
                                     size={20}
-                                    color={item.likedBy && item.likedBy.includes(username) ? "red" : "white"}
+                                    color={item.likedBy && item.likedBy.includes(username) ? 'red' : 'white'}
                                 />
                                 <Text style={[styles.text, { color: '#999' }]}>{item.likes ? item.likes : 0}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => handleCommentPost(item._id)}>
-                                <Icon
-                                    source="message-outline"
-                                    size={20}
-                                    color='white'
-                                />
+                                <Icon source="message-outline" size={20} color="white" />
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => handleCopy(item.postData, item._id)}>
                                 <Icon
-                                    source={copying && copyiedPostId == item._id ? 'blur' : 'content-copy'}
+                                    source={copying && copyiedPostId === item._id ? 'blur' : 'content-copy'}
                                     size={20}
-                                    color='white'
+                                    color="white"
                                 />
                             </TouchableOpacity>
                         </View>
@@ -150,9 +136,8 @@ const ShowUserPosts = (props) => {
                 key={item => item._id}
                 onEndReached={handleFetchMore}
                 onEndReachedThreshold={0}
-                ListFooterComponent={<ActivityIndicator size={'large'} />}
-                ListHeaderComponent={<HeaderComponent styles={styles} userData={userData} />}
-            // refreshing={refreshing}
+                ListFooterComponent={<ActivityIndicator size="large" />}
+                ListHeaderComponent={isProfileSection ? <HeaderComponent styles={styles} userData={userData} /> : <Text style={[styles.heading3, { color: '#fff' }]}>Feed</Text>}
             />
         </GestureHandlerRootView>
     );
@@ -195,8 +180,6 @@ const HeaderComponent = (props) => {
     )
 }
 
-
-
 const localStyles = StyleSheet.create({
     horizontalContainer: {
         gap: 10,
@@ -205,14 +188,12 @@ const localStyles = StyleSheet.create({
         flexDirection: 'column',
         backgroundColor: '#222',
         gap: 10,
-
     },
     postWrapper: {
         backgroundColor: '#333',
         padding: 10,
         borderRadius: 20,
         marginVertical: 20,
-
     },
     postDataContainer: {
         marginVertical: 5,
@@ -220,12 +201,12 @@ const localStyles = StyleSheet.create({
         borderRadius: 8,
         paddingHorizontal: 10,
         paddingVertical: 5,
-        marginVertical: 10
+        marginVertical: 10,
     },
     postIconsContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-evenly'
-    }
-})
+        justifyContent: 'space-evenly',
+    },
+});
 
-export default ShowUserPosts
+export default CommonShowPosts;

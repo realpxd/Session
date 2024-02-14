@@ -1,10 +1,10 @@
 // App.tsx
 import React, { useState, useContext } from 'react';
-import { getGlobalStyles } from './globalStyles';
+import { getGlobalStyles } from '../globalStyles';
 import MainActivity from './components/MainActivity/MainActivity';
 import NavActivity from './components/UserActivity/NavActivity';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { AppContext } from './index'; // Import AppContext directly
+import { AppContext } from '../index'; // Import AppContext directly
 
 
 const styles = getGlobalStyles();
@@ -27,14 +27,14 @@ const App = () => {
     "posts": []
   }));
 
-  AsyncStorage.getItem('user').then((value) => {
-    if (value) {
-      setIsUserLoggedIn(true)
-    }else{
-      setIsUserLoggedIn(false)
-    }
-  }
-  );
+  // AsyncStorage.getItem('user').then((value) => {
+  //   if (value) {
+  //     setIsUserLoggedIn(true)
+  //   }else{
+  //     setIsUserLoggedIn(false)
+  //   }
+  // }
+  // );
   console.log(isUserLoggedIn)
 
   return (

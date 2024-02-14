@@ -4,7 +4,7 @@ import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Avatar, Icon, TextInput } from 'react-native-paper';
 import Clipboard from '@react-native-clipboard/clipboard';
 import ShowPosts from './ShowPosts';
-import { SERVER_URL } from '@env';
+import Config from 'react-native-config';
 
 const username = "nmn"
 
@@ -13,7 +13,7 @@ const CreatePost = (props) => {
     const [postData, setPostData] = useState('');
     const handleCreatePost = async () => {
         try {
-            const response = await fetch(`${SERVER_URL}/client/createPost`, {
+            const response = await fetch(`${Config.SERVER_URL}/client/createPost`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

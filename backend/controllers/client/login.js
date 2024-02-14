@@ -2,7 +2,8 @@ const bcrypt = require('bcryptjs');
 const Users = require('../../models/Users.js');
 
 const login = async (req, res) => {
-    const { email, password } = req.body;
+    const { email, pass } = req.body;
+    console.log(email , pass);
     try {
         // Checking if user already exists
         let userExist = await Users.findOne({ email })
@@ -12,7 +13,7 @@ const login = async (req, res) => {
             res.status(405).json({ message: "Invalid Credentials" })
         } else {
             // If user exists, check the password
-            const isPasswordValid = await userExist.comparePassword(password);
+            const isPasswordValid = await userExist.comparePassword(pass);
 
             if (isPasswordValid) {
                 // If password is valid, generate a token and send a success response

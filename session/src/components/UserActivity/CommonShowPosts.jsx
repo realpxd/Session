@@ -5,7 +5,7 @@ import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Avatar, Icon, Divider } from 'react-native-paper';
 import Clipboard from '@react-native-clipboard/clipboard';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { SERVER_URL } from '@env';
+import Config from 'react-native-config';
 
 const username = "nmn"
 
@@ -32,7 +32,7 @@ const CommonShowPosts = (props) => {
     const handleLikePost = async (postId, currentLikes) => {
         setIsLikePressed(true);
         try {
-            const response = await fetch(`${SERVER_URL}/client/updatePost`, {
+            const response = await fetch(`${Config.SERVER_URL}/client/updatePost`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ const CommonShowPosts = (props) => {
             return;
         }
         try {
-            const response = await fetch(`${SERVER_URL}/client/getPosts`, {
+            const response = await fetch(`${Config.SERVER_URL}/client/getPosts`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

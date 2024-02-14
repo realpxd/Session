@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Image, Form, StyleSheet, Modal, Dimension
 import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Avatar, Icon, TextInput } from 'react-native-paper';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { SERVER_URL } from '@env';
+import Config from 'react-native-config';
 
 const username = "nmn"
 
@@ -19,7 +19,7 @@ const ShowPosts = (props) => {
     const handleLikePost = async (postId, currentLikes) => {
         setIsLikePressed(true)
         try {
-            const response = await fetch(`${SERVER_URL}/client/updatePost`, {
+            const response = await fetch(`${Config.SERVER_URL}/client/updatePost`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -52,7 +52,7 @@ const ShowPosts = (props) => {
 
     const handleFetchMore = async () => {
         try {
-            const response = await fetch(`${SERVER_URL}/client/getPosts`, {
+            const response = await fetch(`${Config.SERVER_URL}/client/getPosts`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

@@ -5,7 +5,7 @@ import { Avatar, Icon, TextInput } from 'react-native-paper';
 import { Divider } from 'react-native-paper';
 import CommonShowPosts from '../CommonShowPosts';
 import CreatePost from '../Feed/CreatePost';
-import { SERVER_URL } from '@env';
+import Config from 'react-native-config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Profile = (props) => {
@@ -33,7 +33,7 @@ const Profile = (props) => {
 
   const getPosts = async () => {
     try {
-      const response = await fetch(`${SERVER_URL}/client/getPosts`, {
+      const response = await fetch(`${Config.SERVER_URL}/client/getPosts`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

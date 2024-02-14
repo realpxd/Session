@@ -6,7 +6,7 @@ import { Avatar, Icon, TextInput } from 'react-native-paper';
 import Clipboard from '@react-native-clipboard/clipboard';
 import CommonShowPosts from '../CommonShowPosts';
 import CreatePost from './CreatePost';
-import { SERVER_URL } from '@env';
+import Config from 'react-native-config';
 
 const Feed = (props) => {
   const { styles } = props;
@@ -20,7 +20,7 @@ const Feed = (props) => {
 
   const getPosts = async () => {
     try {
-      const response = await fetch(`${SERVER_URL}/client/getPosts`, {
+      const response = await fetch(`${Config.SERVER_URL}/client/getPosts`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

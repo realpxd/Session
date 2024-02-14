@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, TouchableOpacity, Image, Form, ActivityIndicator } from 'react-native'
 import { TextInput, HelperText } from 'react-native-paper';
-import { SERVER_URL } from '@env';
+import Config from 'react-native-config';
 
 const Register = (props) => {
     const { styles } = props
@@ -29,7 +29,7 @@ const Register = (props) => {
 
     const handleSubmit = async () => {
         try {
-            const response = await fetch(`${SERVER_URL}/client/signup`, {
+            const response = await fetch(`${Config.SERVER_URL}/client/signup`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ const Register = (props) => {
                 body: JSON.stringify({ name, email, password }),
             });
             const data = await response.json();
-            if(data.status === 200){
+            if(data.message === "Account created successfully :)"){
                 setErrorMessage(data.message)
                 setIsRegisterBtnClicked(false);
                 props.navigation.navigate('NavActivity')

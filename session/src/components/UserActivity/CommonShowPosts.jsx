@@ -69,7 +69,9 @@ const CommonShowPosts = (props) => {
             if (data.length < 2) {
                 setHasMorePosts(false);
                 console.log('No more posts');
-                setPosts(prev => [...prev, ...prev.slice(-8)]);
+                // slice only the first 8 posts
+                setPosts
+                setPosts(prev => [...prev, ...prev.slice(8)]);
             } else {
                 setPosts(prev => [...prev, ...data.reverse()]);
                 setPostPageNum(postPageNum + 1);
@@ -101,7 +103,7 @@ const CommonShowPosts = (props) => {
                 renderItem={({ item }) => (
                     <View style={[styles.verticalContainer, localStyles.postWrapper]}>
                         <View style={[localStyles.horizontalContainer, { flexDirection: 'row' }]}>
-                            <TouchableOpacity onPress={() => props.navigation.navigate('Profile')}>
+                            <TouchableOpacity onPress={() => props.extras.navigation.navigate('Profile')}>
                                 <Avatar.Icon size={24} icon="account" />
                             </TouchableOpacity>
                             <Text style={styles.text}>{item.username}</Text>

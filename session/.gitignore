@@ -2,7 +2,8 @@
 #
 .DS_Store
 
-#env
+# Environment Variables File
+#
 .env
 
 # Xcode

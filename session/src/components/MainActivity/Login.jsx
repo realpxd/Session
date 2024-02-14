@@ -5,6 +5,7 @@ import { View, Text, TouchableOpacity, Image, Form, ActivityIndicator } from 're
 import { HelperText, TextInput } from 'react-native-paper';
 import Config from 'react-native-config';
 import { getGlobalStyles } from '../../../globalStyles'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const styles = getGlobalStyles()
 
 const Login = (props) => {
@@ -41,6 +42,7 @@ const Login = (props) => {
             if(data.message == "Login successful."){
                 setIsLoginBtnClicked(false);
                 props.navigation.navigate('NavActivity')
+                AsyncStorage.setItem('user', JSON.stringify(data.userData));
             }else{
                 setIsLoginBtnClicked(false);
                 setErrorMessage(data.message)

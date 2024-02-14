@@ -7,7 +7,7 @@ const Home = (props) => {
     return (
         <View style={[styles.wrapperVertical, { justifyContent: 'center', gap: 100 }]}>
             <View>
-                <Image style={[styles.img, { marginTop: 15 }]} source={require('../../public/img/logo.png')} />
+                <Image style={[styles.img, { marginTop: 15 }]} source={require('../../../public/img/logo.png')} />
                 {/* <Text style={[styles.heading2, { textAlign: 'center', color:"#fff" }]}>Look around!</Text> */}
                 {/* <Text style={[styles.text, { fontWeight: '500' }]}>An original app built by Naman Saini, A Passionate Software Developer. Source code is published on github. If you are also a developer and want to contribute then go ahead, contributions are appreciated!</Text> */}
             </View>

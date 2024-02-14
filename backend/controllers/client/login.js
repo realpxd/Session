@@ -20,7 +20,8 @@ const login = async (req, res) => {
                 res.status(200).json({
                     message: "Login successful.",
                     token: await userExist.generateToken(),
-                    userId: userExist._id.toString()
+                    userId: userExist._id.toString(),
+                    userData: userExist
                 })
             } else {
                 // If password is invalid, send an error

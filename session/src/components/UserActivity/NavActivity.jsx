@@ -13,17 +13,17 @@ const Tab = createMaterialBottomTabNavigator();
 
 const NavActivity = (props) => {
   const { styles } = props
+  var extras = props
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
     { key: 'Feed', title: 'Feed', focusedIcon: 'home', unfocusedIcon: 'home-outline' },
     { key: 'Inbox', title: 'Inbox', focusedIcon: 'chat', unfocusedIcon: 'chat-outline' },
     { key: 'Profile', title: 'Profile', focusedIcon: 'account', unfocusedIcon: 'account-outline' }
   ]);
-
   const renderScene = BottomNavigation.SceneMap({
-    Feed: (props) => <Feed {...props} styles={styles} />,
-    Inbox: (props) => <Inbox {...props} styles={styles} />,
-    Profile: (props) => <Profile {...props} styles={styles} />,
+    Feed: (props) => <Feed {...props} extras={extras} styles={styles} />,
+    Inbox: (props) => <Inbox {...props} extras={extras} styles={styles} />,
+    Profile: (props) => <Profile {...props} extras={extras} styles={styles} />,
   });
 
 

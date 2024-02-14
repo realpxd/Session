@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, TouchableOpacity, Image, Form, ActivityIndicator } from 'react-native'
 import { TextInput, HelperText } from 'react-native-paper';
 import Config from 'react-native-config';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Register = (props) => {
     const { styles } = props
@@ -41,6 +42,7 @@ const Register = (props) => {
                 setErrorMessage(data.message)
                 setIsRegisterBtnClicked(false);
                 props.navigation.navigate('NavActivity')
+                AsyncStorage.setItem('user', JSON.stringify(data.userData));
             }else{
                 setIsLoginBtnClicked(false);
                 setErrorMessage(data.message)

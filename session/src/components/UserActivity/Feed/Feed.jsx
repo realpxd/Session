@@ -39,7 +39,6 @@ const Feed = (props) => {
       console.log('Feed Component unmounted');
     };
   }, []);
-
   return (
     <>
       <TouchableOpacity onPress={() => setCPVisible(false)} activeOpacity={1} disabled={!cpVisible}>
@@ -48,6 +47,7 @@ const Feed = (props) => {
             {posts.length ? (
               <CommonShowPosts
                 {...props}
+                extras={props.extras}
                 postPageNum={postPageNum}
                 setPostPageNum={setPostPageNum}
                 hasMorePosts={hasMorePosts}
@@ -107,8 +107,38 @@ const Feed = (props) => {
   );
 };
 
+
 const localStyles = StyleSheet.create({
-  // ... your local styles
-});
+  horizontalContainer: {
+    gap: 10,
+  },
+  rounded: {
+    borderRadius: 20
+  },
+  wrapperVertical: {
+    flexDirection: 'column',
+    backgroundColor: '#222',
+    gap: 10
+  },
+  postWrapper: {
+    backgroundColor: '#333',
+    padding: 10,
+    borderRadius: 20,
+    marginVertical: 20
+
+  },
+  postDataContainer: {
+    marginVertical: 5,
+    backgroundColor: '#444',
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    marginVertical: 10
+  },
+  postIconsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly'
+  }
+})
 
 export default Feed;

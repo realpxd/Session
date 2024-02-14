@@ -8,6 +8,7 @@ import Home from './Home'
 import Register from './Register'
 import Login from './Login'
 import NavActivity from '../UserActivity/NavActivity';
+import Profile from '../UserActivity/Profile/Profile';
 
 const Stack = createStackNavigator();
 const MyTheme = {
@@ -57,6 +58,24 @@ const MainActivity = (props) => {
             }
           >
             {props => <NavActivity {...props} styles={styles} />}
+          </Stack.Screen>
+          <Stack.Screen name="Profile"
+            options={
+              {
+                headerShown: false,
+                headerStyle: {
+                  backgroundColor: '#F4B942',
+                  borderRadius: 30,
+                  elevation: 5,
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    height: 10,
+                  },
+                }
+              }
+            }
+          >
+            {props => <Profile {...props} styles={styles} />}
           </Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>

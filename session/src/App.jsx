@@ -1,10 +1,12 @@
 // App.tsx
 import React, { useState, useContext } from 'react';
 import { getGlobalStyles } from '../globalStyles';
+import { Text } from 'react-native';
 import MainActivity from './components/MainActivity/MainActivity';
 import NavActivity from './components/UserActivity/NavActivity';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AppContext } from '../index'; // Import AppContext directly
+import Config from 'react-native-config';
 
 
 const styles = getGlobalStyles();
@@ -39,6 +41,7 @@ const App = () => {
 
   return (
     <>
+      {/* <Text>{Config.SERVER_PORT} {Config.SERVER_URL}</Text> */}
       {!isUserLoggedIn ?
         <MainActivity styles={styles} />
         :

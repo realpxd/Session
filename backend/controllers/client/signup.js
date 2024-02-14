@@ -17,7 +17,8 @@ const signup = async (req, res) => {
             res.status(200).json({
                 message: "Account created successfully :)",
                 token: await userCreated.generateToken(),
-                userId: userCreated._id.toString()
+                userId: userCreated._id.toString(),
+                userData: userCreated
             })
         } else {
             //if user exists, send an error

@@ -14,7 +14,7 @@ const Profile = (props) => {
   const [posts, setPosts] = useState({});
   const [cpVisible, setCPVisible] = useState(false);
   const [hasMorePosts, setHasMorePosts] = useState(true);
-  const [postPageNum, setPostPageNum] = useState(1);
+  const [postPageNum, setPostPageNum] = useState(2);
 
   const [userData, setUserData] = useState({});
 
@@ -41,7 +41,7 @@ const Profile = (props) => {
         body: JSON.stringify({ username: userData.username }),
       });
       const data = await response.json();
-      setPosts(data.reverse());
+      setPosts(data);
     } catch (e) {
       setErrorMessage(e.message);
     }

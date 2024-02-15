@@ -92,7 +92,7 @@ const CommonShowPosts = (props) => {
                 setPosts
                 setPosts(prev => [...prev, ...prev.slice(8)]);
             } else {
-                setPosts(prev => [...prev, ...data.reverse()]);
+                setPosts(prev => [...prev, ...data]);
                 setPostPageNum(postPageNum + 1);
                 console.log('Fetched more posts');
             }

@@ -5,11 +5,13 @@ const getPosts = async (req, res) => {
     try {
         if (username) {
             const posts = await Posts.find({ username })
+            .sort({ createdAt: -1 })
             .skip((postPageNum - 1) * limit)
             .limit(limit);
             res.status(200).json(posts);
         }else{
             const posts = await Posts.find()
+            .sort({ createdAt: -1 })
             .skip((postPageNum - 1) * limit)
             .limit(limit);
             res.status(200).json(posts);

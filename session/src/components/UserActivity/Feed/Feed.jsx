@@ -16,7 +16,7 @@ const Feed = (props) => {
   const [postData, setPostData] = useState('');
   const [cpVisible, setCPVisible] = useState(false);
   const [hasMorePosts, setHasMorePosts] = useState(true);
-  const [postPageNum, setPostPageNum] = useState(1);
+  const [postPageNum, setPostPageNum] = useState(2);
 
   const getPosts = async () => {
     try {
@@ -27,7 +27,7 @@ const Feed = (props) => {
         },
       });
       const data = await response.json();
-      setPosts(data.reverse());
+      setPosts(data);
     } catch (e) {
       setErrorMessage(e.message);
     }

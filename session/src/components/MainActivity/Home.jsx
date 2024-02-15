@@ -1,9 +1,57 @@
-import React from 'react'
+import React , {useState, useEffect} from 'react'
 import { View, Text, TouchableOpacity, Image, Form } from 'react-native'
 import { IconButton } from 'react-native-paper'
+import {useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Home = (props) => {
     const { styles } = props
+    const navigation = useNavigation();
+  
+    const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+  
+  
+    useEffect(() => {
+      AsyncStorage.setItem('user', JSON.stringify({
+        "username": "nmn",
+        fullname: "Naman Saini",
+        "email": "thisisnamansaini@gmail.com",
+        "password": "1234",
+        "profilePic": " ",
+        "bio": "this is my bio....",
+        "followers": [],
+        "following": [],
+        "posts": []
+      }));
+    }, []);
+  
+    useEffect(() => {
+  
+      AsyncStorage.getItem('user').then((value) => {
+        if (value) {
+          setIsUserLoggedIn(true)
+        } else {
+          setIsUserLoggedIn(false)
+        }
+      }
+      );
+      console.log(isUserLoggedIn)
+  
+      return () => {
+        console.log('MainActivity unmounted');
+      };
+  
+    }, [isUserLoggedIn])
+  
+    useEffect(() => {
+      if (isUserLoggedIn) {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'NavActivity' }],
+        });
+      }
+    }, [isUserLoggedIn]);
+  
     return (
         <View style={[styles.wrapperVertical, { justifyContent: 'center', gap: 100 }]}>
             <View>

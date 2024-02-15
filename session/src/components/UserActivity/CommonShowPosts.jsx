@@ -10,24 +10,43 @@ import Config from 'react-native-config';
 const username = "nmn"
 
 const CommonShowPosts = (props) => {
-    const { setPosts, post, styles, setErrorMessage, hasMorePosts, setHasMorePosts, postPageNum, setPostPageNum, userData, isProfileSection } = props;
+    const { setPosts, post, styles, setErrorMessage, hasMorePosts, setHasMorePosts, postPageNum, setPostPageNum, isProfileSection, } = props;
+    // const { profileOpen } = props.route.params;
     const [isLiked, setIsLiked] = useState(0);
     const [copying, setCopying] = useState(false);
     const [copyiedPostId, setCopyiedPostId] = useState('');
     const [isLikePressed, setIsLikePressed] = useState(false);
+    const { recUserData, profileOpen } = props.route.params || {};
+    const [userData, setUserData] = useState({});
+    const [currUserData, setCurrUserData] = useState({ username: '' })
 
-    const [currUserData, setUserData] = useState({})
+
     useEffect(() => {
         AsyncStorage.getItem('user').then((data) => {
             if (data) {
-                setUserData(JSON.parse(data))
+                setCurrUserData(JSON.parse(data))
             }
-        })
+        }).catch(error => console.error("Error fetching user data:", error));
+
+
         return () => {
             console.log('ShowUserPosts Component unmounted');
         };
     }, [])
-    console.log(currUserData)
+
+    useEffect(() => {
+
+        recUserData ? currUserData.username == recUserData.username ? setUserData(currUserData) : setUserData(recUserData) : setUserData(currUserData)
+
+        // if (currUserData.username == recUserData.username) {
+        //     setUserData(currUserData)
+        // } else {
+        //     setUserData(currUserData)
+        // }
+    }), [recUserData, currUserData]
+    console.log('recUserData', recUserData)
+    console.log('userData', userData)
+    console.log('currUserData', currUserData)
 
     const handleLikePost = async (postId, currentLikes) => {
         setIsLikePressed(true);
@@ -96,14 +115,20 @@ const CommonShowPosts = (props) => {
         }, 100);
     };
 
+    // console.log('ProfileOpen: ' + props)
+    // console.log(props.route)
+    // useEffect(() => {
+    //     console.log('ProfileOpen: ' + props)
+    //     console.log(props.route); // Log the params to check their values
+    //   }, [props.route]);
     return (
-        <GestureHandlerRootView>
+        <GestureHandlerRootView style={[{ height: profileOpen ? Dimensions.get('window').height + 40 : 'auto' }]}>
             <FlatList
                 style={[{ height: Dimensions.get('window').height - 30 }]}
                 renderItem={({ item }) => (
                     <View style={[styles.verticalContainer, localStyles.postWrapper]}>
                         <View style={[localStyles.horizontalContainer, { flexDirection: 'row' }]}>
-                            <TouchableOpacity onPress={() => props.extras.navigation.navigate('Profile')}>
+                            <TouchableOpacity onPress={() => props.extras.navigation.navigate('Profile', { profileOpen: 'true', recUserData: userData })}>
                                 <Avatar.Icon size={24} icon="account" />
                             </TouchableOpacity>
                             <Text style={styles.text}>{item.username}</Text>

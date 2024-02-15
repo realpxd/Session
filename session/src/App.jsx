@@ -16,18 +16,18 @@ const App = () => {
 
   // console.log('App.tsx: warehouse: ', warehouse);
 
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
-  AsyncStorage.setItem('user', JSON.stringify({
-    "username": "nmn",
-    fullname: "Naman Saini",
-    "email": "thisisnamansaini@gmail.com",
-    "password": "1234",
-    "profilePic": " ",
-    "bio": "this is my bio....",
-    "followers": [],
-    "following": [],
-    "posts": []
-  }));
+  // const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+  // AsyncStorage.setItem('user', JSON.stringify({
+  //   "username": "nmn",
+  //   fullname: "Naman Saini",
+  //   "email": "thisisnamansaini@gmail.com",
+  //   "password": "1234",
+  //   "profilePic": " ",
+  //   "bio": "this is my bio....",
+  //   "followers": [],
+  //   "following": [],
+  //   "posts": []
+  // }));
 
   // AsyncStorage.getItem('user').then((value) => {
   //   if (value) {
@@ -37,16 +37,16 @@ const App = () => {
   //   }
   // }
   // );
-  console.log(isUserLoggedIn)
+  // console.log(isUserLoggedIn)
 
   return (
     <>
       {/* <Text>{Config.SERVER_PORT} {Config.SERVER_URL}</Text> */}
-      {!isUserLoggedIn ?
+      {/* {!isUserLoggedIn ? */}
         <MainActivity styles={styles} />
-        :
+        {/* :
         <NavActivity styles={styles} />
-      }
+      } */}
     </>
   );
 }

@@ -69,6 +69,7 @@ const Profile = (props) => {
         {posts.length ? (
           <View style={[{ position: 'relative' }]}>
             <CommonShowPosts
+              {...props}
               postPageNum={postPageNum}
               setPostPageNum={setPostPageNum}
               hasMorePosts={hasMorePosts}
@@ -77,7 +78,7 @@ const Profile = (props) => {
               styles={styles}
               post={posts}
               setPosts={setPosts}
-              userData={userData}
+              // userData={userData}
               isProfileSection={true}
             />
           </View>

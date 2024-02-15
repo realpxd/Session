@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity, Image, Form } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme, useNavigation } from '@react-navigation/native';
 import { TextInput } from 'react-native-paper';
 
 import Home from './Home'
@@ -21,14 +21,14 @@ const MyTheme = {
 
 const MainActivity = (props) => {
   const { styles } = props
-
   return (
     <View style={[styles.container, { padding: 0 }]}>
       <NavigationContainer theme={MyTheme}>
         <Stack.Navigator
           screenOptions={{
             headerShown: false
-          }}>
+          }}
+        >
           <Stack.Screen name="Home"
           >
             {props => <Home {...props} styles={styles} />}

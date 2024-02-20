@@ -6,8 +6,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Register = (props) => {
     const { styles } = props
-    const [email, setEmail] = useState('');
     const [name, setName] = useState('');
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPass] = useState('');
     const [cpass, setCpass] = useState('');
     const [isRegisterBtnClicked, setIsRegisterBtnClicked] = useState(false);
@@ -29,22 +30,47 @@ const Register = (props) => {
 
 
     const handleSubmit = async () => {
+
+        if (password !== cpass) {
+            setErrorMessage('Passwords do not match!')
+            return;
+        } else if (password.length < 8) {
+            setErrorMessage('Password must be at least 8 characters long!')
+            return;
+        } else if (name.length < 3) {
+            setErrorMessage('Name must be at least 3 characters long!')
+            return;
+        } else if (username.length < 3) {
+            setErrorMessage('Username must be at least 3 characters long!')
+            return;
+        } else if (email.length < 3) {
+            setErrorMessage('Email must be at least 3 characters long!')
+            return;
+        } else {
+            setErrorMessage('')
+        }
+
+        var passEmail = email.toLowerCase()
+
         try {
             const response = await fetch(`${Config.SERVER_URL}/client/signup`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ name, email, password }),
+                body: JSON.stringify({ name, email: passEmail, password, username }),
             });
             const data = await response.json();
-            if(data.message === "Account created successfully :)"){
+            if (data.message === "Account created successfully :)") {
                 setErrorMessage(data.message)
                 setIsRegisterBtnClicked(false);
                 props.navigation.navigate('NavActivity')
                 AsyncStorage.setItem('user', JSON.stringify(data.userData));
-            }else{
-                setIsLoginBtnClicked(false);
+                // console.log("AsyncStorage.getItem('user')")
+                // console.log(AsyncStorage.getItem('user'))
+                // console.log(data.userData)
+            } else {
+                setIsRegisterBtnClicked(false);
                 setErrorMessage(data.message)
             }
         } catch (e) {
@@ -60,21 +86,30 @@ const Register = (props) => {
                 <Text style={[styles.heading1, { color: "#fff" }]}>Sign up</Text>
                 <TextInput
                     mode="outlined"
-                    label="Email"
-                    value={email}
-                    style={styles.input}
-                    theme={{ colors: { onSurface: "white" } }}
-                    onChangeText={email => setEmail(email)}
-                    left={<TextInput.Icon icon="email" />}
-                />
-                <TextInput
-                    mode="outlined"
                     label="Name"
                     value={name}
                     style={styles.input}
                     theme={{ colors: { onSurface: "white" } }}
                     onChangeText={name => setName(name)}
                     left={<TextInput.Icon icon="account" />}
+                />
+                <TextInput
+                    mode="outlined"
+                    label="Username"
+                    value={username}
+                    style={styles.input}
+                    theme={{ colors: { onSurface: "white" } }}
+                    onChangeText={username => setUsername(username)}
+                    left={<TextInput.Icon icon="wizard-hat" />}
+                />
+                <TextInput
+                    mode="outlined"
+                    label="Email"
+                    value={email}
+                    style={styles.input}
+                    theme={{ colors: { onSurface: "white" } }}
+                    onChangeText={email => setEmail(email)}
+                    left={<TextInput.Icon icon="email" />}
                 />
                 <TextInput
                     mode="outlined"

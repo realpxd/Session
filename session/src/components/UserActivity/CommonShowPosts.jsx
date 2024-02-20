@@ -10,7 +10,7 @@ import Config from 'react-native-config';
 const username = "nmn"
 
 const CommonShowPosts = (props) => {
-    const { setPosts, post, styles, setErrorMessage, hasMorePosts, setHasMorePosts, postPageNum, setPostPageNum, isProfileSection, } = props;
+    const { setPosts, post, styles, setErrorMessage, hasMorePosts, setHasMorePosts, postPageNum, setPostPageNum, isProfileSection, passedUserData } = props;
     // const { profileOpen } = props.route.params;
     const [isLiked, setIsLiked] = useState(0);
     const [copying, setCopying] = useState(false);
@@ -33,10 +33,34 @@ const CommonShowPosts = (props) => {
             console.log('ShowUserPosts Component unmounted');
         };
     }, [])
-
     useEffect(() => {
+        console.log('recUserData:', recUserData);
+        console.log('currUserData:', currUserData);
+        console.log('passedUserData from props:', passedUserData);
 
-        recUserData ? currUserData.username == recUserData.username ? setUserData(currUserData) : setUserData(recUserData) : setUserData(currUserData)
+        if (recUserData) {
+            if (currUserData.username === recUserData.username) {
+                console.log('Setting userData from recUserData');
+                setUserData(recUserData);
+            } else {
+                console.log('Setting userData from currUserData');
+                setUserData(currUserData);
+            }
+        } else if (passedUserData) {
+            if (currUserData.username === passedUserData.username) {
+                console.log('Setting userData from passedUserData');
+                setUserData(passedUserData);
+            } else {
+                console.log('no data found');
+                // setUserData(currUserData);
+            }
+        } else {
+            console.log('Setting userData from currUserData');
+            setUserData(currUserData);
+        }
+
+
+        // recUserData ? currUserData.username == recUserData.username ? setUserData(currUserData) : setUserData(recUserData) : passedUserData ? currUserData.username == passedUserData.username ? setUserData(currUserData) : setUserData(passedUserData) : setUserData(currUserData)
 
         // if (currUserData.username == recUserData.username) {
         //     setUserData(currUserData)
@@ -44,9 +68,10 @@ const CommonShowPosts = (props) => {
         //     setUserData(currUserData)
         // }
     }), [recUserData, currUserData]
-    console.log('recUserData', recUserData)
-    console.log('userData', userData)
-    console.log('currUserData', currUserData)
+    // console.log('recUserData', recUserData)
+    // console.log('userData', userData)
+    // console.log('currUserData', currUserData)
+    // console.log('passedUserData', passedUserData)
 
     const handleLikePost = async (postId, currentLikes) => {
         setIsLikePressed(true);
@@ -126,7 +151,7 @@ const CommonShowPosts = (props) => {
             <FlatList
                 style={[{ height: Dimensions.get('window').height - 30 }]}
                 renderItem={({ item }) => (
-                    <View style={[styles.verticalContainer, localStyles.postWrapper]}>
+                    <View style={[styles.verticalContainer, localStyles.postWrapper, { marginHorizontal: 10 }]}>
                         <View style={[localStyles.horizontalContainer, { flexDirection: 'row' }]}>
                             <TouchableOpacity onPress={() => props.extras.navigation.navigate('Profile', { profileOpen: 'true', recUserData: userData })}>
                                 <Avatar.Icon size={24} icon="account" />
@@ -164,7 +189,7 @@ const CommonShowPosts = (props) => {
                 onEndReached={handleFetchMore}
                 onEndReachedThreshold={0}
                 ListFooterComponent={<ActivityIndicator size="large" />}
-                ListHeaderComponent={isProfileSection ? <HeaderComponent styles={styles} userData={userData} /> : <Text style={[styles.heading3, { color: '#fff' }]}>Feed</Text>}
+                ListHeaderComponent={isProfileSection ? <HeaderComponent {...props} styles={styles} userData={userData} /> : <Text style={[styles.heading3, { color: '#fff', marginHorizontal: 10 }]}>Feed</Text>}
             />
         </GestureHandlerRootView>
     );
@@ -172,24 +197,52 @@ const CommonShowPosts = (props) => {
 
 const HeaderComponent = (props) => {
     const { styles, userData } = props
-    const image = { uri: 'https://legacy.reactjs.org/logo-og.png' };
+    // the image exists in public local folder
+    const image = require('../../../public/img/pfp.jpg');
+
+    // const image = require('@expo/snack-static/img/pfp.jpg')
+    // const image = require('./img/pfp.jpg');
+    // const image = require('@expo/snack-static/react-native-logo.png');
+    // const image = {uri: 'https://reactnative.dev/img/tiny_logo.png',}
+    // const image = { uri: '' };
     return (
         <>
+        <TouchableOpacity
+          onPress={() => props.extras.navigation.navigate('Settings' , {...props})}
+  
+          style={[
+            styles.btnPrimary,
+            {
+              position: 'absolute',
+              top: 15,
+              right: 15,
+              zIndex: 98,
+              width: 60,
+              height: 60,
+              justifyContent: 'center',
+              alignItems: 'center',
+              fontSize: 20,
+              fontWeight: 'bolder',
+              backgroundColor: '#111',
+            },
+          ]}>
+          <Icon source="spider" size={30} color="#F4B942" />
+  
+        </TouchableOpacity>
             <View style={[{}]}>
                 <ImageBackground source={image} resizeMode="cover" style={styles.image}>
-                    <View style={[{ height: 200, backgroundColor: 'red' }]}>
+                    <View style={[{ height: 200, backgroundColor: 'gray' }]}>
 
                     </View>
                 </ImageBackground>
             </View>
-            <View style={[{ position: 'absolute', top: 130, left: 10, zIndex: 2, }]}>
+            <View style={[{ position: 'absolute', top: 130, left: 10, zIndex: 2, height: 150, width: 150, borderRadius: 100, backgroundColor: 'black' }]}>
 
                 <Image
                     style={[{
                         width: 150,
                         height: 150,
                         borderRadius: 100,
-                        backgroundColor: 'blue',
                     }]}
                     resizeMode='cover'
                     source={image}
@@ -197,7 +250,7 @@ const HeaderComponent = (props) => {
             </View>
             <View style={[{ marginVertical: 20, marginTop: 90, paddingHorizontal: 10 }]}>
                 <View style={[{ flexDirection: 'row', gap: 15, alignItems: 'center' }]}>
-                    <Text style={[{ color: 'white', fontWeight: 'bold', fontSize: 25 }]}>{userData.fullname}</Text>
+                    <Text style={[{ color: 'white', fontWeight: 'bold', fontSize: 25 }]}>{userData.name}</Text>
                     <Text style={[{ color: '#999', fontWeight: 'bold', fontSize: 20 }]}>@{userData.username}</Text>
                 </View>
                 <Text style={[{ color: '#e0e0e0', fontSize: 15, textAlign: 'justify' }]}>{userData.bio}</Text>

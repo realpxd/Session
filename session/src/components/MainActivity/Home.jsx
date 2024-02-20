@@ -11,19 +11,19 @@ const Home = (props) => {
     const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   
   
-    useEffect(() => {
-      AsyncStorage.setItem('user', JSON.stringify({
-        "username": "nmn",
-        fullname: "Naman Saini",
-        "email": "thisisnamansaini@gmail.com",
-        "password": "1234",
-        "profilePic": " ",
-        "bio": "this is my bio....",
-        "followers": [],
-        "following": [],
-        "posts": []
-      }));
-    }, []);
+    // useEffect(() => {
+      // AsyncStorage.setItem('user', JSON.stringify({
+    //     "username": "nmn",
+    //     name: "Naman Saini",
+    //     "email": "thisisnamansaini@gmail.com",
+    //     "password": "1234",
+    //     "profilePic": " ",
+    //     "bio": "this is my bio....",
+    //     "followers": [],
+    //     "following": [],
+    //     "posts": []
+    //   }));
+    // }, []);
   
     useEffect(() => {
   

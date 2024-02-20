@@ -42,7 +42,7 @@ const Feed = (props) => {
   return (
     <>
       <TouchableOpacity onPress={() => setCPVisible(false)} activeOpacity={1} disabled={!cpVisible}>
-        <View style={[localStyles.wrapperVertical, { paddingHorizontal: 15, paddingBottom: 245 }]}>
+        <View style={[localStyles.wrapperVertical, { paddingHorizontal: 0, paddingBottom: 245 }]}>
           <View style={[localStyles.wrapperVertical, { gap: 0 }]}>
             {posts.length ? (
               <CommonShowPosts

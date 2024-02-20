@@ -30,20 +30,32 @@ const Login = (props) => {
     }
 
     const handleSubmit = async () => {
+
+        if (pass.length < 8) {
+            setErrorMessage('Password must be at least 8 characters long!')
+            return;
+        } else if (email.length < 3) {
+            setErrorMessage('Email must be at least 3 characters long!')
+            return;
+        } else {
+            setErrorMessage('')
+        }
+        var passEmail = email.toLowerCase()
+
         try {
             const response = await fetch(`${Config.SERVER_URL}/client/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email, pass }),
+                body: JSON.stringify({ email: passEmail, pass }),
             });
             const data = await response.json();
-            if(data.message == "Login successful."){
+            if (data.message == "Login successful.") {
                 setIsLoginBtnClicked(false);
                 props.navigation.navigate('NavActivity')
                 AsyncStorage.setItem('user', JSON.stringify(data.userData));
-            }else{
+            } else {
                 setIsLoginBtnClicked(false);
                 setErrorMessage(data.message)
             }
@@ -89,12 +101,12 @@ const Login = (props) => {
                     </TouchableOpacity>
                 </View>
             </View>
-            {errorMessage && <HelperText style={{ fontSize: 15}} type="error">
+            {errorMessage && <HelperText style={{ fontSize: 15 }} type="error">
                 {errorMessage}
             </HelperText>}
             <TouchableOpacity onPress={() => handleLogin()} style={[styles.btnPrimary, { marginTop: 50 }]}>
                 {isLoginBtnClicked ? <ActivityIndicator size="30" color="#000" /> :
-                    <Text style={[styles.btnSecondaryText , {color:'#000' , fontWeight:'bold'}]}>Continue</Text>}
+                    <Text style={[styles.btnSecondaryText, { color: '#000', fontWeight: 'bold' }]}>Continue</Text>}
             </TouchableOpacity>
         </View>
     )

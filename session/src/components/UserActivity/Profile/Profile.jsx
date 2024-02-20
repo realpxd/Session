@@ -5,6 +5,7 @@ import { Avatar, Icon, TextInput } from 'react-native-paper';
 import { Divider } from 'react-native-paper';
 import CommonShowPosts from '../CommonShowPosts';
 import CreatePost from '../Feed/CreatePost';
+import Settings from './Settings';
 import Config from 'react-native-config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -54,14 +55,6 @@ const Profile = (props) => {
     };
   }, []);
 
-  const handleLogout = async () => {
-    try {
-      await AsyncStorage.removeItem('user');
-      props.extras.navigation.navigate('Login');
-    } catch (e) {
-      console.warn(e);
-    }
-  };
 
   return (
     <>
@@ -78,7 +71,7 @@ const Profile = (props) => {
               styles={styles}
               post={posts}
               setPosts={setPosts}
-              // userData={userData}
+              passedUserData={userData}
               isProfileSection={true}
             />
           </View>
@@ -104,28 +97,6 @@ const Profile = (props) => {
             )}
           </Text>
         )}
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => handleLogout()}
-
-        style={[
-          styles.btnPrimary,
-          {
-            position: 'absolute',
-            top: 15,
-            right: 15,
-            zIndex: 98,
-            width: 60,
-            height: 60,
-            justifyContent: 'center',
-            alignItems: 'center',
-            fontSize: 20,
-            fontWeight: 'bolder',
-            backgroundColor: '#111',
-          },
-        ]}>
-        <Icon source="spider" size={30} color="#F4B942" />
-
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => setCPVisible(true)}

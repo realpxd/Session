@@ -33,19 +33,19 @@ const AllChats = (props) => {
                     key={item => item._id}
                     // onEndReached={handleFetchMore}
                     onEndReachedThreshold={0}
-                    ListFooterComponent={<Text style={[{ alignSelf: 'center' }]}>.</Text>}
+                    ListFooterComponent={<Text style={[{ alignSelf: 'center', fontSize:32, fontWeight:'bold' }]}>.</Text>}
                     ListHeaderComponent={
                         <View style={[localStyles.wrapperVertical, { gap: 0 }]}>
                             <Text style={[styles.heading3, { color: '#fff' }]}>Inbox</Text>
-                            <View style={localStyles.chatWrapper}>
+                            <TouchableOpacity onPress={() => props.extras.navigation.navigate('ChatBuilder', {styles: styles})} style={localStyles.chatWrapper}>
                                 <View style={localStyles.chatContainer}>
                                     <Avatar.Icon size={24} icon="folder" />
                                     <View style={localStyles.chatData}>
-                                        <Text style={localStyles.chatFrom}>fullname</Text>
-                                        <Text style={localStyles.chatMsg}>message</Text>
+                                        <Text style={localStyles.chatFrom}>Global Chat</Text>
+                                        <Text style={localStyles.chatMsg}>open for all users, chat now!</Text>
                                     </View>
                                 </View>
-                            </View>
+                            </TouchableOpacity>
                         </View>}
                 />
 

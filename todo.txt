@@ -1,0 +1,4 @@
+todo in session
+- anonymous mode
+- inbox
+- what next person writing in real time

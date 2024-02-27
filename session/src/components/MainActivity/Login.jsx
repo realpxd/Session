@@ -97,7 +97,10 @@ const Login = (props) => {
                         <Text style={[styles.text, { color: '#6B9AC4', textAlign: 'left' }]}>new to session?</Text>
                     </TouchableOpacity>
                     <TouchableOpacity >
-                        <Text style={[styles.text, { color: '#6B9AC4', textAlign: 'right' }]}>reset password</Text>
+                        <Text style={[styles.text, { color: '#6B9AC4', textAlign: 'right' }]}>{
+                            //reset password
+                        }
+                        </Text>
                     </TouchableOpacity>
                 </View>
             </View>
